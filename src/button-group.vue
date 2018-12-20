@@ -34,10 +34,11 @@
              使用 margin负值
              在hover的瞬间 z-index增加权重
             */
-            margin-left:-1px;
-
+            &:not(:first-child){
+                /* 不是第一个元素才有margin负值 */
+                margin-left:-1px;
+            }
             &:first-child{
-                margin-left:0px; /* 移除第一个元素的margin负值 */
                 border-top-left-radius: var(--border-radius);
                 border-bottom-left-radius: var(--border-radius);
             }
