@@ -18,8 +18,12 @@ new Vue({
 })
 
 import chai from 'chai'
+// 引入 间谍 spies
+import spies from 'chai-spies'
+chai.use(spies);
 
 const expect = chai.expect;
+
 
 // 单元测试-测试  icon属性是否一致
 {
@@ -152,16 +156,25 @@ const expect = chai.expect;
 
     vm.$mount();
 
-
+    /*
     vm.$on('click',function(){
         //通过判断打印 来以为 button被点击 这是错的
         console.log(1);
     });
+    */
+
+
+    let spy = chai.spy(()=>{
+        // 间谍里的函数被调用
+        console.log(1222);
+    });
+
+    vm.$on('click',spy);
 
     let button = vm.$el;
-
     button.click();
-
+    // 希望间谍里的函数被执行
+    expect(spy).to.have.been.called();
 
     //别忘了清理战场
     vm.$el.remove();
