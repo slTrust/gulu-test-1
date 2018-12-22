@@ -1,0 +1,100 @@
+### 发布npm包
+
+> #### 1.确保 npm run test 全是绿色(原谅色)才行
+
+> #### 2.上传代码到 npmjs.org
+
+- 更新 package.json
+
+```
+在 package.json 里将版本号改为 0.0.1，等我们做完了再改成 1.0.0
+创建 index.js，在 index.js 里将你想要导出的内容全部导出
+
+
+index.js里 
+
+import Button from './src/button'
+import ButtonGroup from './src/button-group'
+import Icon from './src/icon'
+
+export {Button,ButtonGroup,Icon}
+
+
+然后去package.json里 添加入口文件
+"main": "index.js",
+```
+
+> #### 3. 去 https://www.npmjs.com/ 注册一个账户
+
+> #### 4. 在你的项目根目录运行 npm adduser
+
+```
+huangjiaxideMacBook-Pro:gulu-demo huangjiaxi$ npm adduser
+Username: almost_00
+Password: 
+Email: (this IS public) trustfor@sina.cn
+
+npm ERR! code E409
+npm ERR! Registry returned 409 for PUT on https://registry.npm.taobao.org/-/user/org.couchdb.user:almost_00: conflict
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /Users/huangjiaxi/.npm/_logs/2018-12-22T07_54_52_544Z-debug.log
+
+```
+
+- 为什么报错呢？
+
+因为为了下载的快捷 下载源是 淘宝
+
+如果错误提示里面含有 https://registry.npm.taobao.org 则说明你的 npm 源目前为淘宝源，需要更换为 npm 官方源
+
+> 修改配置
+
+```
+查看配置
+npm config list 
+
+打印如下
+; cli configs
+metrics-registry = "https://registry.npm.taobao.org/"
+scope = ""
+user-agent = "npm/6.4.1 node/v10.14.2 darwin x64"
+
+; userconfig /Users/huangjiaxi/.npmrc
+registry = "https://registry.npm.taobao.org/"
+
+; node bin location = /usr/local/bin/node
+; cwd = /Users/huangjiaxi/Desktop/gulu-demo
+; HOME = /Users/huangjiaxi
+; "npm config ls -l" to show all defaults.
+
+------------------------------------
+进入这个目录
+userconfig /Users/huangjiaxi/.npmrc
+注释掉这句话
+registry = "https://registry.npm.taobao.org/"
+
+我的路径是
+vi /Users/huangjiaxi/.npmrc
+vi /Users/huangjiaxi/.npmrc
+vi /Users/huangjiaxi/.npmrc
+
+```
+
+> 再次进行 npm adduser
+
+```
+输入你的账号 密码 邮箱
+出现 下面代表你成功了
+Logged in as 用户名 on https://registry.npmjs.org/.
+```
+
+> 此时建议修改 package.json里的 name 
+
+- 你还不是完整的项目
+- 而且你不想让别人觉得你low
+- 起名起个不重要的 如 gulu-test-0-1
+- 不要忘了提交代码 然后在发布
+
+> 发布
+
