@@ -94,7 +94,153 @@ Logged in as 用户名 on https://registry.npmjs.org/.
 - 你还不是完整的项目
 - 而且你不想让别人觉得你low
 - 起名起个不重要的 如 gulu-test-0-1
-- 不要忘了提交代码 然后在发布
+- 不要忘了提交代码然后push 最后在发布 npm publish
 
-> 发布
+> 发布 npm publish
+
+- 如果还失败会反馈一些信息可能是你起的名字像个垃圾，重新改个稍微正常的名字就可以
+
+```
+npm notice 
+npm notice 📦  gulu-test-0-1@0.0.1
+npm notice === Tarball Contents === 
+npm notice 1.2kB  package.json                        
+npm notice 219B   .travis.yml                         
+npm notice 1.4kB  index.html                          
+npm notice 142B   index.js                            
+npm notice 1.9kB  karma.conf.js                       
+npm notice 1.1kB  LICENSE                             
+npm notice 149B   README.md                           
+npm notice 1.2kB  documents/000测试初步.md            
+npm notice 11.2kB documents/001持续集成.md            
+npm notice 9.4kB  documents/002测试用例剖析.md        
+npm notice 2.2kB  documents/003持续集成之自动化测试.md
+npm notice 2.4kB  documents/004发布npm包              
+npm notice 4.6kB  src/app.js                          
+npm notice 1.6kB  src/button-group.vue                
+npm notice 1.8kB  src/button.vue                      
+npm notice 249B   src/icon.vue                        
+npm notice 2.5kB  test/button.test.js                 
+npm notice === Tarball Details === 
+npm notice name:          gulu-test-0-1                           
+npm notice version:       0.0.1                                   
+npm notice package size:  12.7 kB                                 
+npm notice unpacked size: 43.2 kB                                 
+npm notice shasum:        51b1f601c27fb721286d2d050eaf6ffe1c769f42
+npm notice integrity:     sha512-LYslf1Ks1XGw3[...]YlFEyDNX6iIaA==
+npm notice total files:   17                                      
+npm notice 
++ gulu-test-0-1@0.0.1
+```
+
+
+#### 使用自己的包
+
+> 预测其他使用你的包的人会怎么使用
+
+- 使用 vue-cli
+- 使用 webpack
+- 使用 parcel
+
+> 分别使用这些方式来使用自己的包（我们只以 vue-cli 为例）我用的是vue-cli3
+
+```
+// 注意此时要切换命令行的目录 我用的桌面
+cd ~/Desktop 
+vue create hello-world
+直接一路回车
+按照提示运行
+cd hello-world
+yarn serve
+
+如果顺利 你就可以去浏览器看到一个空架子的 vue项目
+
+安装我们的 npm包
+注意目录 防止你手贱
+注意目录 防止你手贱
+注意目录 防止你手贱
+cd ~/Desktop/hello-world
+npm i gulu-test-0-1
+下载的很慢 
+    1因为淘宝源没换回来
+
+细节注意 如果一路回车开启的 vue-cli项目用的是yarn
+你这里用的是 npm 千万千万不要 npm和 yarn 混着用
+
+yarn add  gulu-test-0-1
+
+```
+
+> 在 hello-world 项目里引入我们的 轮子
+
+```
+// main.js
+import {Button,ButtonGroup,Icon} from 'gulu-test-0-1'
+
+console.log(Button);
+
+
+-------------------------------
+重新运行 yarn serve
+
+结果报错了
+Failed to compile with 3 errors                                                                   16:28:10
+
+Failed to resolve loader: sass-loader
+You may need to install it. 
+```
+
+> 失败的原因
+
+node目前不支持 import 
+
+```
+import Button from './src/button'
+import ButtonGroup from './src/button-group'
+import Icon from './src/icon'
+
+export {Button,ButtonGroup,Icon}
+```
+
+
+> #### 使用过程中我们发现报错说 import 语法有问题，那时因为 node 目前确实不支持 import，我们需要用 babel 转译 import
+
+- 你可以要求使用者自己用 babel 来转译(写轮子的大忌)
+- 你也可以转义好了再给他用
+
+回到 gulu-demo 里
+
+```
+npx parcel build index.js --no-minify
+
+# 得到三个文件
+dist/index.js     8.42 KB    1.92s
+dist/index.css    2.09 KB    1.73s
+dist/index.map        0 B      2ms
+
+修改 package.json里 的 main路径
+dist/index.js
+```
+
+> ##### 但是此时有个问题 那就是.gitignore 文件里你忽略里dist目录
+
+```
+我们先不处理 先提交代码 然后发布 npm试一下
+此时发布会报错  意思就是不允许发同一个版本的文件
+修改 package.json里的
+"version": "0.0.2",
+然后 提交代码 然后发布
+```
+
+```
+npx parcel build index.js --no-minify （本来不应该加 --no-minify 的，奈何不加会有 bug，HTML 压缩把 slot 标签全删了）
+将 package.json 的 main 改为 dist/index.js
+```
+
+> 使用 npm link 或者 yarn link 来加速调试
+
+你每次修改源码之后，有两条路让别人得到最新效果
+
+- 更新 package.json 里的 version，然后 npm publish。别人通过 npm update xxx 来更新。
+- 如果你只是为了本地调试，可以在项目目录使用 npm link，然后在使用之处运行 npm link xxx，就是最新了
 
