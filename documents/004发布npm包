@@ -211,7 +211,7 @@ export {Button,ButtonGroup,Icon}
 回到 gulu-demo 里
 
 ```
-npx parcel build index.js --no-minify
+npx parcel build index.js --no-minify --no-cache
 
 # 得到三个文件
 dist/index.js     8.42 KB    1.92s
@@ -229,11 +229,79 @@ dist/index.js
 此时发布会报错  意思就是不允许发同一个版本的文件
 修改 package.json里的
 "version": "0.0.2",
-然后 提交代码 然后发布
+然后发布
 ```
 
+小白选手更新了我们的包 回到 hello-world 程序
+
 ```
-npx parcel build index.js --no-minify （本来不应该加 --no-minify 的，奈何不加会有 bug，HTML 压缩把 slot 标签全删了）
+yarn add gulu-test-0-1
+
+yarn serve
+
+http://localhost:8080/ 里面 确实打印了这个 Button对象
+把它添加到app.vue里
+
+
+<template>
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <g-button>欢迎使用轱辘</g-button>
+  </div>
+</template>
+
+<script>
+import HelloWorld from './components/HelloWorld.vue'
+import {Button,ButtonGroup,Icon} from 'gulu-test-0-1'
+
+console.log(Button);
+export default {
+  name: 'app',
+  components: {
+    HelloWorld,
+    'g-button':Button
+  }
+}
+</script>
+
+<style>
+...
+</style>
+
+然后再去浏览器看  发现没有样式 所以要手动引入 css
+
+import 'gulu-test-0-1/dist/index.css'
+
+然后再去浏览器看  就剩文字了 颜色边框都没了
+
+那是因为 最开始的时候 我们要引入一段样式
+在 hello-world 的app.vue里 的style里加入如下
+:root{
+    --button-height:32px;
+    --font-size:14px;
+    --button-bg:white;
+    --button-active-bg:#eee;
+    --border-radius:4px;
+    --color:#333;
+    --border-color:#999;
+    --border-color-hover:#666;
+}
+
+最后
+最后
+最后
+
+终于磕磕绊绊的完成了。
+```
+
+- npm publish 是从本地发布 所以不用提交代码到仓库
+- npm publish 是从本地发布 所以不用提交代码到仓库
+- npm publish 是从本地发布 所以不用提交代码到仓库
+
+
+```
+npx parcel build index.js --no-minify --no-cache（本来不应该加 --no-minify 的，奈何不加会有 bug，HTML 压缩把 slot 标签全删了）
 将 package.json 的 main 改为 dist/index.js
 ```
 
@@ -243,4 +311,11 @@ npx parcel build index.js --no-minify （本来不应该加 --no-minify 的，�
 
 - 更新 package.json 里的 version，然后 npm publish。别人通过 npm update xxx 来更新。
 - 如果你只是为了本地调试，可以在项目目录使用 npm link，然后在使用之处运行 npm link xxx，就是最新了
+
+
+### 此时还有一个小bug需要优化
+
+- 就是每次改动 你的 gulu-demo里的代码
+- 修改package.json里的版本号 
+- 重新发布
 
