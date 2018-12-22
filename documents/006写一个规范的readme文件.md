@@ -37,4 +37,54 @@ npx parcel --no-cache
 先提交代码这样代码就不会消失
 ```
 
+> 排查问题
+
+- 一定记住:出现问题先提交代码这样代码就不会消失
+- 一定记住:出现问题先提交代码这样代码就不会消失
+- 一定记住:出现问题先提交代码这样代码就不会消失
+
+```
+git log 查看所有提交改动  
+然后重置版本 到对面的 commit id
+
+回到前一次的改动 排查
+git reset --hard 11d7f0a1cd794c8fef7e1393003632ea6df58c98
+
+经过版本回归 
+我们发现在 xxx版本的时候我们添加了 一个 index.js
+```
+
+> nodejs的坑
+
+
+```
+npx parcel 的时候 首先会去找 index.js
+相当于 npx parcel index.js
+
+我们回到我们之前最后一次 commit
+git reset --hard xxxx版本号
+
+重新运行命令
+
+npx parcel index.html --no-cache
+```
+
+#### 分析我们的排错过程
+
+比如代码每次提交 都有版本
+
+- A版本
+- B版本
+- C版本
+
+```
+1。 C不能运行
+2。 A能运行
+3。 git reset --hard A
+4。 二分法 (A+C)/2的位置 来试试行不行 最终锁定某一版本导致的问题
+5。 B造成了问题 
+6。 对比 A 和 B  git show B
+
+```
+
 

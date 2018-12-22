@@ -60,11 +60,7 @@
  }
  ```
  
- 4. 引入svg symbols
- 
- ```
- <script src="//at.alicdn.com/t/font_974904_ushycxf2p1b.js"></script>
- ```
+
 
 ## 文档
 
