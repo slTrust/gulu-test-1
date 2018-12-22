@@ -66,6 +66,10 @@
     <p class="temp"></p>
     <!--触发自己的 change 事件 -->
     <g-input value="赵" @change="inputChange" id="aaa"></g-input>
+    <p class="temp"></p>
+    <g-input value="赵" v-model="msg"></g-input>
+    {{msg}}
+
 
 </div>
 <script src="./src/app.js"></script>

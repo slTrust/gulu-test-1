@@ -16,15 +16,18 @@ new Vue({
         loading1:false,
         loading2:false,
         loading3:false,
+        msg:'hello'
     },
     created(){
         // 3秒后在我们自己的这个 input上触发 change 事件
+        /*
         setTimeout(()=>{
             let event = new Event('change');
             let inputElement = this.$el.querySelector('#aaa input');
             inputElement.dispatchEvent(event);
             console.log('hi');
         },3000)
+        */
     },
     methods:{
         inputChange(e){
