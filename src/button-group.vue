@@ -6,6 +6,7 @@
 
 <script>
     export default {
+        name:'GuluButtonGroup',
         mounted() {
             /*
                 解决智障用户  非往 group里 放 非 g-button元素
