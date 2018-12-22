@@ -48,3 +48,10 @@ git push origin button-and-input:button-and-input
 git push origin 分支名xxx:分支名xxx
 ``` 
 
+
+#### 切换分支,切换宇宙
+
+```
+git checkout button-and-input
+```
+
