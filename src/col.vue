@@ -1,6 +1,10 @@
 <template>
-    <div class="col" :class="[`col-${span}`,offset && `offset-${offset}`]">
-        <slot></slot>
+    <div class="col" :class="[`col-${span}`,offset && `offset-${offset}`]"
+        :style="{paddingLeft:gutter/2+'px',paddingRight:gutter/2+'px'}"
+    >
+        <div style="border:1px solid green;">
+            <slot></slot>
+        </div>
     </div>
 </template>
 
@@ -13,17 +17,26 @@
             },
             offset:{
                 type:[Number,String]
-            }
+            },
+        },
+        data(){
+           return {
+               gutter:0
+           }
+        },
+        created() {
+            console.log('col created')
+        },
+        mounted() {
+            console.log('col mounted')
         }
     }
 </script>
 
 <style scoped lang="scss">
     .col{
-        height: 100px;
-        background: grey;
+        height: 50px;
         width:50%;
-        border:1px solid red;
     }
 
     $class-prefix: col-;
