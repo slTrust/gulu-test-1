@@ -39,22 +39,46 @@
 <body>
 <div id="app">
     <p class="temp"></p>
-    <!-- 测试响应式 -->
+    <p>测试响应式(Mobile First)</p>
+    <g-row>
+        <g-col span="24" :ipad="{span:12}" :pc="{span:8}">
+            <p class="box1"></p>
+        </g-col>
+        <g-col span="24" :ipad="{span:12}" :pc="{span:8}">
+            <p class="box2"></p>
+        </g-col>
+        <g-col span="24" :ipad="{span:12}" :pc="{span:8}">
+            <p class="box1"></p>
+        </g-col>
+        <g-col span="24" :ipad="{span:12}" :pc="{span:8}">
+            <p class="box2"></p>
+        </g-col>
+        <g-col span="24" :ipad="{span:12}" :pc="{span:8}">
+            <p class="box1"></p>
+        </g-col>
+        <g-col span="24" :ipad="{span:12}" :pc="{span:8}">
+            <p class="box2"></p>
+        </g-col>
+
+        </g-col>
+    </g-row>
+    <p class="temp"></p>
+    <p>测试响应式</p>
     <g-row>
         <g-col span="24"
-               :ipad="{span:8}"
-               :narrow-pc="{span:4}"
-               :pc="{span:2}"
-               :wide-pc="{span:1}"
+           :ipad="{span:8}"
+           :narrow-pc="{span:4}"
+           :pc="{span:2}"
+           :wide-pc="{span:1}"
 
-               class="box1"></g-col>
+           class="box1"></g-col>
         <g-col span="24"
-               :ipad="{span:16}"
-               :narrow-pc="{span:20}"
-               :pc="{span:22}"
-               :wide-pc="{span:23}"
+           :ipad="{span:16}"
+           :narrow-pc="{span:20}"
+           :pc="{span:22}"
+           :wide-pc="{span:23}"
 
-               class="box2"></g-col>
+           class="box2"></g-col>
     </g-row>
     <p class="temp"></p>
     <!-- 手动测试栅格 -->
