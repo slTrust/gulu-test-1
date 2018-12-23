@@ -41,7 +41,6 @@
 <style scoped lang="scss">
     .col{
         height: 50px;
-        width:50%;
     }
 
     $class-prefix: col-;
