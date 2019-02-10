@@ -232,3 +232,76 @@ content.vue里
     </g-layout>
 </g-layout>
 ```
+
+
+### sider 可以关闭
+
+- https://cn.vuejs.org/ 查看动画章节
+- 给要动画的地方外面包一个 transition 标签 设置name="xxx" 
+- 添加样式 .xxx-enter-active,.xxx-leave-active /.xxx-enter,.xxx-leave-to
+
+```
+<template>
+    <transition name="slide">
+        <div class="sider" v-if="visible">
+            <slot></slot>
+            <button @click="visible=false">close</button>
+        </div>
+    </transition>
+</template>
+
+<script>
+    export default {
+        name: "GuluSider",
+        data(){
+            return{
+                visible:true
+            }
+        },
+        methods:{
+        }
+    }
+</script>
+
+<style scoped lang="scss">
+    .sider{
+        position:relative;
+        > button{
+            position: absolute;
+            top:0;
+            right:0;
+        }
+    }
+    .slide-enter-active,.slide-leave-active{
+        transition: all .5s;
+    }
+    .slide-enter,.slide-leave-to{
+        margin-left:-200px
+    }
+</style>
+```
+
+- 有一个问题就是margin-left 不该是写死的(后期高级轮子解决这个问题)
+- 现在唯一的办法就是用户自己添加一个类覆盖这个样式
+
+index.html 里覆盖的写法
+
+```
+.sider{
+    background: #333;
+    width: 150px;
+}
+.sider.slide-enter,.sider.slide-leave-to{
+    margin-left:-150px;
+}
+
+<g-layout style="height:100vh;">
+    <g-sider>sider</g-sider>
+    <g-layout>
+        <g-header>header</g-header>
+        <g-content>content</g-content>
+        <g-footer>footer</g-footer>
+    </g-layout>
+</g-layout>
+```
+
