@@ -18,7 +18,7 @@
         }
 
         #app{
-            margin:20px;
+            /*margin:20px;*/
         }
 
         body{
@@ -44,10 +44,46 @@
 </head>
 <body>
 <div id="app">
+    <!--上中下布局-->
+    <!--
+    <g-layout style="height:100vh;">-->
+        <!--<g-header class="demo">header</g-header>-->
+        <!--<g-content class="demo">content</g-content>-->
+        <!--<g-footer  class="demo">footer</g-footer>-->
+    <!--</g-layout>
+    -->
+
+    <!--带侧边栏上中下布局 ，侧边栏在左边-->
+
+    <!--<g-layout style="height:100vh;">-->
+        <!--<g-header class="demo">header</g-header>-->
+        <!--<g-layout>-->
+            <!--<g-sider class="demo">sider</g-sider>-->
+            <!--<g-content class="demo">content</g-content>-->
+        <!--</g-layout>-->
+        <!--<g-footer  class="demo">footer</g-footer>-->
+    <!--</g-layout>-->
+
+    <!--带侧边栏上中下布局 ，侧边栏在右边-->
+
+    <!--<g-layout style="height:100vh;">-->
+        <!--<g-header class="demo">header</g-header>-->
+        <!--<g-layout>-->
+            <!--<g-content class="demo">content</g-content>-->
+            <!--<g-sider class="demo">sider</g-sider>-->
+        <!--</g-layout>-->
+        <!--<g-footer  class="demo">footer</g-footer>-->
+    <!--</g-layout>-->
+
+    <!-- 侧边栏单独在最左侧，右侧上中下-->
+
     <g-layout style="height:100vh;">
-        <g-header class="demo">header</g-header>
-        <g-content class="demo">content</g-content>
-        <g-footer  class="demo">footer</g-footer>
+        <g-sider class="demo">sider</g-sider>
+        <g-layout>
+            <g-header class="demo">header</g-header>
+            <g-content class="demo">content</g-content>
+            <g-footer  class="demo">footer</g-footer>
+        </g-layout>
     </g-layout>
 
 
