@@ -34,7 +34,6 @@
         flex-grow:1;
         display: flex;
         flex-direction: column;
-        border:1px solid red;
         &.hasSider{
             /* 有sider 就是按照 横向排布 */
             flex-direction: row;
