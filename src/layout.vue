@@ -6,7 +6,7 @@
 
 <script>
     export default {
-        name: "layout",
+        name: "GuluLayout",
         data(){
             return{
                 layoutClass:{

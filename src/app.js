@@ -11,6 +11,8 @@ import Sider from './sider';
 import Content from './content';
 import Footer from './footer';
 
+import plugin from './plugin'
+Vue.use(plugin);
 
 Vue.component('g-button',Button);
 Vue.component('g-icon',Icon);
@@ -43,8 +45,12 @@ new Vue({
             console.log('hi');
         },3000)
         */
+
     },
     methods:{
+        showToast(){
+            this.$toast('我是 message')
+        },
         inputChange(e){
             console.log(e);
             console.log(e.target.value);
