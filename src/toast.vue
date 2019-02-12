@@ -1,6 +1,10 @@
 <template>
     <div class="toast">
         <slot></slot>
+        <div class="line"></div>
+        <span class="close" v-if="closeButton" @click="onClickClose">
+            {{ closeButton.text }}
+        </span>
     </div>
 </template>
 
@@ -15,6 +19,15 @@
             autoCloseDelay:{
                 type:Number,
                 default:5
+            },
+            closeButton:{
+                type:Object,
+                default:()=>{
+                    return {
+                        text:'关闭',
+                        callback:undefined
+                    }
+                }
             }
         },
         mounted(){
@@ -28,6 +41,16 @@
             close(){
                 this.$el.remove();
                 this.$destroy();
+            },
+            log(){
+                console.log(1);
+            },
+            onClickClose(){
+                this.close();
+                if(this.closeButton && typeof this.closeButton.callback === 'function'){
+                    // 如果用户想调用 toast 组件里的 log 函数 就把this回传  this === toast 实例
+                    this.closeButton.callback(this);
+                }
             }
         }
     }
@@ -54,5 +77,13 @@
         /* 文字居中最好就是 flex */
         display:flex;
         align-items: center;
+    }
+    .close{
+        padding-left:16px;
+    }
+    .line{
+        border-left:1px solid #666;
+        height:100%;
+        margin-left:16px;
     }
 </style>

@@ -49,7 +49,16 @@ new Vue({
     },
     methods:{
         showToast(){
-            this.$toast('我是 message')
+            this.$toast('我是 message',{
+                closeButton:{
+                    text:'知道了',
+                    callback(){
+                        console.log('用户点击知道了')
+                    }
+                }
+            })
+            // 因为 toast 里 用的 slot 所以导致按字符串原样输出 而不是 html
+            // this.$toast('我是 <strong>加粗文字</strong>',{})
         },
         inputChange(e){
             console.log(e);
