@@ -48,7 +48,7 @@ new Vue({
 
     },
     methods:{
-        showToast(){
+        showToast(position){
             // this.$toast('我是 message',{
             //     closeButton:{
             //         text:'知道了',
@@ -69,9 +69,7 @@ new Vue({
             // this.$toast('我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字')
 
             this.$toast('你的智商需要充值',{
-                // position:'top',
-                // position:'bottom',
-                position:'middle',
+                position:position,
                 closeButton:{
                     text:'已充值',
                     callback(){
