@@ -76,6 +76,8 @@
             },
             close(){
                 this.$el.remove();
+                // 一定要在 $destroy 之前
+                this.$emit('close');
                 this.$destroy();
             },
             log(){
