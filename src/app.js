@@ -49,16 +49,25 @@ new Vue({
     },
     methods:{
         showToast(){
-            this.$toast('我是 message',{
-                closeButton:{
-                    text:'知道了',
-                    callback(){
-                        console.log('用户点击知道了')
-                    }
-                }
-            })
+            // this.$toast('我是 message',{
+            //     closeButton:{
+            //         text:'知道了',
+            //         callback(){
+            //             console.log('用户点击知道了')
+            //         }
+            //     }
+            // })
             // 因为 toast 里 用的 slot 所以导致按字符串原样输出 而不是 html
             // this.$toast('我是 <strong>加粗文字</strong>',{})
+
+            // 改用 enableHtml 来决定是否开启html渲染
+
+            // 这样导致一个问题，就是屏幕小的时候  关闭 两个子就折行了
+            // this.$toast('<p>段落<strong>hi</strong><br/><a href="http://qq.com">qq</a></p>',{ enableHtml:!true })
+
+            // 文本过多的折行显示问题
+            this.$toast('我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字')
+
         },
         inputChange(e){
             console.log(e);
