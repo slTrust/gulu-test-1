@@ -66,7 +66,19 @@ new Vue({
             // this.$toast('<p>段落<strong>hi</strong><br/><a href="http://qq.com">qq</a></p>',{ enableHtml:!true })
 
             // 文本过多的折行显示问题
-            this.$toast('我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字')
+            // this.$toast('我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字我是文字')
+
+            this.$toast('你的智商需要充值',{
+                // position:'top',
+                // position:'bottom',
+                position:'middle',
+                closeButton:{
+                    text:'已充值',
+                    callback(){
+                        console.log('用户说已经充值了')
+                    }
+                }
+            })
 
         },
         inputChange(e){
