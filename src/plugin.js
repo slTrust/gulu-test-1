@@ -29,7 +29,7 @@ function createToast({Vue,message,propsData,onClose}){
     toast.$slots.default = [message];
     toast.$mount()
     console.log(toast.$el)
-    this.on('close',onClose);
+    toast.$on('close',onClose);
     document.body.appendChild(toast.$el)
     return toast;
 }

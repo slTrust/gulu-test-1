@@ -98,7 +98,15 @@
     $font-size:14px;
     $toast-min-height:40px;
     $toast-bg:rgba(0,0,0,0.75);
+
+    /* 淡入 */
+    @keyframes fade-in {
+        0%{opacity: 0; transform: translateY(100%)}
+        100%{opacity: 1;transform: translateY(0)}
+    }
     .toast{
+        /* 淡入，从下面弹出*/
+        animation: fade-in 1s;
         font-size: $font-size;
         min-height:$toast-min-height;
         background: $toast-bg;
