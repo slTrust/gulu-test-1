@@ -21,7 +21,7 @@
             },
             autoCloseDelay:{
                 type:Number,
-                default:522
+                default:5
             },
             closeButton:{
                 type:Object,
