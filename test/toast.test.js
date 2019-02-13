@@ -45,10 +45,12 @@ describe('Toast', () => {
             // console.log(vm.$el.outerHTML) // 打印 toast 的结构
             let closeButton = vm.$el.querySelector('.close');
             expect(closeButton.textContent.trim()).to.eq('关闭吧')
+            setTimeout(()=>{
+                closeButton.click();
+                // 期待 callback被调用
+                expect(callback).to.have.been.called;
+            },200)
 
-            closeButton.click();
-            // 期待 callback被调用
-            expect(callback).to.have.been.called;
         })
 
         it('接受 enableHtml', () => {
@@ -76,7 +78,7 @@ describe('Toast', () => {
                 }
             });
             vm.$mount();
-            console.log(vm.$el.outerHTML)
+            // console.log(vm.$el.outerHTML)
             expect(vm.$el.classList.contains('position-bottom')).to.eq(true)
 
         })
