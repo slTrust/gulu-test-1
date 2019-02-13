@@ -28,7 +28,6 @@ function createToast({Vue,message,propsData,onClose}){
     let toast = new Constructor({propsData});
     toast.$slots.default = [message];
     toast.$mount()
-    console.log(toast.$el)
     toast.$on('close',onClose);
     document.body.appendChild(toast.$el)
     return toast;
