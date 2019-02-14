@@ -142,3 +142,27 @@ tabs-item.vue 里 点击的时候触发 update:selected 事件
     </g-tabs-body>
 </g-tabs>
 ```
+
+### 框架的目的是什么
+
+- 框住你的东西
+- 让框架的 xx 写不出 垃圾代码
+- 保证代码的平均质量
+
+> #### angular 是真正的框架
+
+- vue还在成为框架的途中
+- angular花了很大的篇幅介绍 测试，意思就是不写测试就别写代码。测试没通过你就不该发布
+    - [angular testing](https://angular.io/guide/testing)
+
+
+> 为什么不推荐 改 props里的数据呢？
+
+```
+function fn(obj,n){
+    obj.a = 1 // bad
+    n = 2
+    var number = n // good
+    return obj
+}
+```
