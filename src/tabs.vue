@@ -5,6 +5,7 @@
 </template>
 
 <script>
+    import Vue from 'vue';
     export default {
         name: "GuluTabs",
         props:{
@@ -20,9 +21,20 @@
                 }
             }
         },
+        data(){
+          return {
+              eventBus: new Vue()
+          }
+        },
+        provide(){
+            return{
+                eventBus: this.eventBus
+            }
+        },
         created(){
-            // 这个组件必须触发这个事件 才能让 sync 修饰符生效
-            // this.$emit('undate:selected','xxx')
+        },
+        mounted(){
+            this.eventBus.$emit('update:selected',this.selected)
         }
     }
 </script>
