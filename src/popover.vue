@@ -3,7 +3,7 @@
         <div ref="contentWrapper" class="content-wrapper" v-if="visable">
             <slot name="content" ></slot>
         </div>
-        <span ref="triggerWrapper">
+        <span ref="triggerWrapper" style="display:inline-block;">
             <slot></slot>
         </span>
     </div>
@@ -29,13 +29,14 @@
                 console.log('onCLick document')
                 // 再次做判断 判断是点击的内容还是 点击的其他地方
                 // 点击的 是 popover 里的内容区域就不管它
-                console.log(this.$refs.popover)
-                console.log(e.target)
-                console.log(this.$refs.popover.contains(e.target))
                 if(this.$refs.popover &&
                     (this.$refs.popover === e.target ||
                         this.$refs.popover.contains(e.target))
                 ){return }
+                if(this.$refs.contentWrapper &&
+                    (this.$refs.contentWrapper === e.target ||
+                        this.$refs.contentWrapper.contains(e.target))
+                ){return}
                 this.close();
             },
             open(){
@@ -67,6 +68,8 @@
 </script>
 
 <style scoped lang="scss">
+    $border-color:#333;
+    $border-radius:4px;
     .popover{
         display: inline-block;
         vertical-align: top;
@@ -74,8 +77,37 @@
     }
     .content-wrapper{
         position: absolute;
-        border:1px solid red;
-        box-shadow:0 0 3px rgba(0,0,0,0.5);
+        border:1px solid $border-color;
+        border-radius: $border-radius;
+        /* 用box-shadow 小三角就没阴影 */
+        /*box-shadow:0 0 3px rgba(0,0,0,0.5);*/
+        /* filter:drop-shadow()  但你要加背景色*/
+        background: white;
+        filter:drop-shadow(0 1px 1px rgba(0,0,0,0.5));
         transform: translateY(-100%);
+        margin-top:-10px;
+        padding:.5em 1em;
+        /* 设置最大宽度防止一直撑开宽度 */
+        max-width: 20em;
+        /* 处理英文不换行问题 */
+        word-break: break-all;
+        /* popover箭头 */
+        &::before,&::after{
+            content:'';
+            display:block;
+            border:10px solid transparent;
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            left:10px;
+        }
+        &::before{
+            border-top-color:black;
+            top:100%;
+        }
+        &::after{
+            border-top-color:white;
+            top:calc(100% - 1px);
+        }
     }
 </style>
