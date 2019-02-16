@@ -13,10 +13,16 @@
     export default {
         name: "GuluTabsHead",
         inject:['eventBus'],
-        created(){
+        mounted(){
             this.eventBus.$on('update:selected',(item,vm)=>{
                 console.log(item,vm)
-                // console.log(vm.$el.getBoundingClientRect())
+                let {width,height,top,left} = vm.$el.getBoundingClientRect();
+                console.log(width,height,top,left);
+                this.$refs.line.style.width = `${width}px`;
+                // left 是无法做3d 加速的
+                this.$refs.line.style.left = `${left}px`;
+                // transform 是可以 3d加速的 ，但是由于我们改了宽度 所以加不加速都很慢
+                // this.$refs.line.style.transform = `translateX(${left}px)`;
             })
         }
     }
@@ -29,13 +35,12 @@
         display:flex;
         height:$tab-height;
         justify-content: flex-start;
-        border:1px solid red;
         position:relative;
         > .line{
             position:absolute;
             bottom:0;
             border-bottom:1px solid $blue;
-            width:100px;
+            transition: all 350ms;
         }
         > .actions-wrapper{
             margin-left:auto;
