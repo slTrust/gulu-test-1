@@ -1,6 +1,6 @@
 <template>
-    <div class="popover" @click.stop="xxx">
-        <div ref="contentWrapper" class="content-wrapper" v-if="visable" @click.stop>
+    <div class="popover" @click="onCLick" ref="popover">
+        <div ref="contentWrapper" class="content-wrapper" v-if="visable">
             <slot name="content" ></slot>
         </div>
         <span ref="triggerWrapper">
@@ -18,28 +18,48 @@
             }
         },
         methods:{
-            xxx(){
-                this.visable = !this.visable;
-                if(this.visable === true){
-                    // 为什么有 $nextTick 不这样就会导致 popover出不来 因为点击后 visable = true 直接添加事件 然后 visable = false;
-                    this.$nextTick(()=>{
-                        // 点击的瞬间将它 移动到 body里
-                        document.body.appendChild(this.$refs.contentWrapper);
-                        // 获取 span的 位置信息
-                        let {height,width,left,top} = this.$refs.triggerWrapper.getBoundingClientRect();
-                        this.$refs.contentWrapper.style.left = `${left + window.scrollX}px`;
-                        this.$refs.contentWrapper.style.top = `${top + window.scrollY}px`; // 此时位置还是不对
-
-                        let eventHandler = ()=>{
-                            this.visable = false;
-                            console.log('document 隐藏 popover')
-                            document.removeEventListener('click',eventHandler)
-                        }
-
-                        document.addEventListener('click',eventHandler)
-                    })
-                }else{
-                    console.log('vm 隐藏 popover')
+            positionContent(){
+                document.body.appendChild(this.$refs.contentWrapper);
+                // 获取 span的 位置信息
+                let {height, width, left, top} = this.$refs.triggerWrapper.getBoundingClientRect();
+                this.$refs.contentWrapper.style.left = `${left + window.scrollX}px`;
+                this.$refs.contentWrapper.style.top = `${top + window.scrollY}px`; // 此时位置还是不对
+            },
+            onClickDocument(e){
+                console.log('onCLick document')
+                // 再次做判断 判断是点击的内容还是 点击的其他地方
+                // 点击的 是 popover 里的内容区域就不管它
+                console.log(this.$refs.popover)
+                console.log(e.target)
+                console.log(this.$refs.popover.contains(e.target))
+                if(this.$refs.popover &&
+                    (this.$refs.popover === e.target ||
+                        this.$refs.popover.contains(e.target))
+                ){return }
+                this.close();
+            },
+            open(){
+                this.visable = true;
+                // 为什么有 $nextTick 不这样就会导致 popover出不来 因为点击后 visable = true 直接添加事件 然后 visable = false;
+                this.$nextTick(() => {
+                    this.positionContent();
+                    document.addEventListener('click',this.onClickDocument)
+                })
+            },
+            close(){
+                this.visable = false;
+                document.removeEventListener('click', this.onClickDocument)
+            },
+            onCLick(event){
+                // 点击的 按钮
+                if(this.$refs.triggerWrapper.contains(event.target)){
+                    if(this.visable === true) {
+                        console.log('close')
+                        this.close();
+                    }else{
+                        console.log('open')
+                        this.open();
+                    }
                 }
             }
         }
