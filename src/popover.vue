@@ -1,5 +1,5 @@
 <template>
-    <div class="popover" @click="onCLick" ref="popover">
+    <div class="popover" ref="popover">
         <div ref="contentWrapper" class="content-wrapper" v-if="visable"
             :class="{[`position-${position}`]:true}"
         >
@@ -26,6 +26,46 @@
                 validator(value){
                     return ['top','bottom','left','right'].indexOf(value) >= 0
                 }
+            },
+            trigger:{
+                type:String,
+                default:'click',
+                validator(value){
+                    return ['click','hover'].indexOf(value) >= 0
+                }
+            }
+        },
+        computed:{
+            openEvent(){
+                if(this.trigger==='click'){
+                    return 'click'
+                }else{
+                    return 'mouseenter'
+                }
+            },
+            closeEvent(){
+                if(this.trigger==='click'){
+                    return 'click'
+                }else{
+                    return 'mouseleave'
+                }
+            }
+
+        },
+        mounted(){
+            if(this.trigger === 'click'){
+                this.$refs.popover.addEventListener('click',this.onClick)
+            }else{
+                this.$refs.popover.addEventListener('mouseenter',this.open)
+                this.$refs.popover.addEventListener('mouseleave',this.close)
+            }
+        },
+        destroyed(){
+            if(this.trigger === 'click'){
+                this.$refs.popover.removeEventListener('click',this.onClick)
+            }else{
+                this.$refs.popover.removeEventListener('mouseenter',this.open)
+                this.$refs.popover.removeEventListener('mouseleave',this.close)
             }
         },
         methods:{
@@ -84,7 +124,7 @@
                 this.visable = false;
                 document.removeEventListener('click', this.onClickDocument)
             },
-            onCLick(event){
+            onClick(event){
                 // 点击的 按钮
                 if(this.$refs.triggerWrapper.contains(event.target)){
                     if(this.visable === true) {
