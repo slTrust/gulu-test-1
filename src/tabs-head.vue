@@ -15,9 +15,7 @@
         inject:['eventBus'],
         mounted(){
             this.eventBus.$on('update:selected',(item,vm)=>{
-                console.log(item,vm)
                 let {width,height,top,left} = vm.$el.getBoundingClientRect();
-                console.log(width,height,top,left);
                 this.$refs.line.style.width = `${width}px`;
                 // left 是无法做3d 加速的
                 this.$refs.line.style.left = `${left}px`;
