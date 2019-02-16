@@ -1,6 +1,6 @@
 <template>
-    <div class="popover" @click="xxx">
-        <div class="content-wrapper" v-if="visable">
+    <div class="popover" @click.stop="xxx">
+        <div class="content-wrapper" v-if="visable" @click.stop>
             <slot name="content" ></slot>
         </div>
         <slot></slot>
@@ -18,6 +18,20 @@
         methods:{
             xxx(){
                 this.visable = !this.visable;
+                if(this.visable === true){
+                    // 为什么有 $nextTick 不这样就会导致 popover出不来 因为点击后 visable = true 直接添加事件 然后 visable = false;
+                    this.$nextTick(()=>{
+                        let eventHandler = ()=>{
+                            this.visable = false;
+                            console.log('document 隐藏 popover')
+                            document.removeEventListener('click',eventHandler)
+                        }
+
+                        document.addEventListener('click',eventHandler)
+                    })
+                }else{
+                    console.log('vm 隐藏 popover')
+                }
             }
         }
     }
