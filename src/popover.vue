@@ -177,10 +177,12 @@
             }
             &::before{
                 border-top-color:black;
+                border-bottom:none;
                 top:100%;
             }
             &::after{
                 border-top-color:white;
+                border-bottom:none;
                 top:calc(100% - 1px);
             }
         }
@@ -191,10 +193,12 @@
             }
             &::before{
                 border-bottom-color:black;
+                border-top:none;
                 bottom:100%;
             }
             &::after{
                 border-bottom-color:white;
+                border-top:none;
                 bottom:calc(100% - 1px);
             }
         }
@@ -203,10 +207,12 @@
             margin-left:-10px;
             &::before,&::after{
                 transform:translateY(-50%);
+                border-right:none;
                 top:50%;
             }
             &::before{
                 border-left-color:black;
+                border-right:none;
                 left:100%;
             }
             &::after{
@@ -222,10 +228,12 @@
             }
             &::before{
                 border-right-color:black;
+                border-left:none;
                 right:100%;
             }
             &::after{
                 border-right-color:white;
+                border-left:none;
                 right:calc(100% - 1px);
             }
         }
