@@ -1,5 +1,5 @@
 module.exports = {
-    base:'vue-gulu-test-1',
+    base:'/vue-gulu-test-1/',
     title: 'Gulu UI',
     description: '一个好用的UI框架',
     themeConfig: {

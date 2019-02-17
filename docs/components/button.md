@@ -1,6 +1,6 @@
 ---
 title: 按钮
-sidebarDepth: 2
+sidebarDepath: 2
 ---
 
 # 按钮
@@ -8,5 +8,5 @@ sidebarDepth: 2
 使用方法
 
 <ClientOnly>
-    <button-demos class="custom"></button-demos>
+<button-demos></button-demos>
 </ClientOnly>
