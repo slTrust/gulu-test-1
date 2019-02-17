@@ -61,8 +61,18 @@
 </head>
 <body>
 <div id="app">
+    <!-- collapse -->
+    <div style="padding:100px">
+        <g-collapse>
+            <g-collapse-item title="标题1">标题1的内容</g-collapse-item>
+            <g-collapse-item title="标题2">标题2的内容</g-collapse-item>
+            <g-collapse-item title="标题3">标题3的内容</g-collapse-item>
+        </g-collapse>
+    </div>
+
+
     <!-- popover -->
-    <div style="padding-top:100px;padding-left:100px;">
+    <div style="padding-top:100px;padding-left:100px;display:none;" >
         <g-popover>
             <template slot="content" slot-scope="{close}">
                 <div>popover内容1popover内容1popover内容1popover内容1popover内1popover内容1popover内容1popover内容1popover内容1
@@ -99,7 +109,7 @@
         </g-popover>
     </div>
 
-    <div style="padding-top:100px;padding-left:100px;padding-bottom:150px">
+    <div style="padding-top:100px;padding-left:100px;padding-bottom:150px;display: none;">
         <g-popover trigger="hover">
             <template slot="content">
                 <div>popover内容1popover内容1popover内容1popover内容1popover内容1popover内容1popover内容1popover内容1popover内容1popover内容1popover内容1popover内容1popover内容1</div>
