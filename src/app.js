@@ -52,7 +52,7 @@ new Vue({
         loading2:false,
         loading3:false,
         msg:'hello',
-        selectedTab:'2',
+        selectedTab:['1','2'],
     },
     created(){
         // 3秒后在我们自己的这个 input上触发 change 事件
