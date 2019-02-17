@@ -62,13 +62,14 @@
 <body>
 <div id="app">
     <!-- collapse -->
-    <div style="padding:100px">
-        <g-collapse>
-            <g-collapse-item title="标题1">标题1的内容</g-collapse-item>
-            <g-collapse-item title="标题2">标题2的内容</g-collapse-item>
-            <g-collapse-item title="标题3">标题3的内容</g-collapse-item>
+    <div style="padding:100px;padding-bottom:0;">
+        <g-collapse :selected.sync="selectedTab">
+            <g-collapse-item title="标题1" name="1">标题1的内容</g-collapse-item>
+            <g-collapse-item title="标题2" name="2">标题2的内容</g-collapse-item>
+            <g-collapse-item title="标题3" name="3">标题3的内容</g-collapse-item>
         </g-collapse>
     </div>
+    {{selectedTab}}
 
 
     <!-- popover -->
