@@ -10,10 +10,7 @@ import Header from './header';
 import Sider from './sider';
 import Content from './content';
 import Footer from './footer';
-
 import plugin from './plugin'
-Vue.use(plugin);
-
 import Tabs from './tabs';
 import TabsHead from './tabs-head';
 import TabsBody from './tabs-body';
@@ -22,27 +19,31 @@ import TabsPane from './tabs-pane';
 import Popover from './popover';
 import Collapse from './collapse';
 import CollapseItem from './collapse-item';
+import Cascader from './cascader'
 
 
 Vue.component('g-button',Button);
-Vue.component('g-icon',Icon);
 Vue.component('g-button-group',ButtonGroup);
-Vue.component('g-input',Input);
-Vue.component('g-row',Row);
+Vue.component('g-cascader',Cascader);
 Vue.component('g-col',Col);
-Vue.component('g-layout',Layout);
-Vue.component('g-header',Header);
-Vue.component('g-sider',Sider);
-Vue.component('g-content',Content);
-Vue.component('g-footer',Footer);
-Vue.component('g-tabs',Tabs);
-Vue.component('g-tabs-head',TabsHead);
-Vue.component('g-tabs-body',TabsBody);
-Vue.component('g-tabs-item',TabsItem);
-Vue.component('g-tabs-pane',TabsPane);
-Vue.component('g-popover',Popover);
 Vue.component('g-collapse',Collapse);
 Vue.component('g-collapse-item',CollapseItem);
+Vue.component('g-content',Content);
+Vue.component('g-footer',Footer);
+Vue.component('g-header',Header);
+Vue.component('g-icon',Icon);
+Vue.component('g-input',Input);
+Vue.component('g-layout',Layout);
+Vue.component('g-popover',Popover);
+Vue.component('g-row',Row);
+Vue.component('g-sider',Sider);
+Vue.component('g-tabs',Tabs);
+Vue.component('g-tabs-body',TabsBody);
+Vue.component('g-tabs-head',TabsHead);
+Vue.component('g-tabs-item',TabsItem);
+Vue.component('g-tabs-pane',TabsPane);
+Vue.use(plugin);
+
 
 
 new Vue({
@@ -53,6 +54,31 @@ new Vue({
         loading3:false,
         msg:'hello',
         selectedTab:['1','2'],
+        source:[
+            {name:"浙江",children:[
+                    {name:"杭州",
+                     children:[
+                         {name:"上城"},
+                         {name:"下城"},
+                         {name:"江干"}
+                     ]},
+                    {name:"嘉兴",
+                        children:[
+                            {name:"南湖"},
+                            {name:"秀洲"},
+                            {name:"嘉善"}
+                        ]},
+                   ]},
+            {name:"福建",children:[
+                    {name:"福州",
+                        children:[
+                            {name:"鼓楼"},
+                            {name:"台江"},
+                            {name:"仓山"}
+                        ]},
+                    ]},
+
+        ]
     },
     created(){
         // 3秒后在我们自己的这个 input上触发 change 事件
