@@ -1,5 +1,6 @@
 $border-color-hover:#666;
 $border-color:#999;
+$border-color-light:lighten($border-color,25%);
 $border-radius:4px;
 $box-shadow-color:rgba(0,0,0,0.5);
 $button-active-bg:#eee;
@@ -10,3 +11,11 @@ $font-size:14px;
 $height:32px;
 $input-height:32px;
 $red:#F1453D;
+/*  extend就不会复制多份样式 */
+.box-shadow{
+  box-shadow: 0 0 5px rgba(0,0,0,0.15);
+}
+/* 缺陷每次 minxin都会把scss里的内容复制一份 */
+@mixin box-shadow2(){
+  box-shadow:0 0 5px rgba(0,0,0,0.15)
+}
