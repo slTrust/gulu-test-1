@@ -1,13 +1,21 @@
 <template>
     <div class="cascaderItem" :style="{height:height}">
+        <div>
+            level:{{level}}
+        </div>
         <div class="left">
-            <div class="label" v-for="item in items" @click="leftSelected = item">
+            <div class="label" v-for="item in items" @click="onClickLabel(item)">
                 {{item.name}}
                 <icon class="icon" v-if="item.children" name="right"></icon>
             </div>
         </div>
         <div class="right" v-if="rightItems">
-            <gulu-cascader-item :items="rightItems" :height="height"></gulu-cascader-item>
+            <gulu-cascader-item :items="rightItems"
+                                :height="height"
+                                :level="level+1"
+                                :selected="selected"
+                                @update:selected="onUpdateSelected"
+            ></gulu-cascader-item>
         </div>
     </div>
 </template>
@@ -23,20 +31,44 @@
             },
             height:{
                 type:String
-            }
-        },
-        data(){
-            return {
-                leftSelected:null
+            },
+            selected:{
+                type:Array,
+                default:()=>{return []}
+            },
+            level:{
+                type:Number,
+                default:0
             }
         },
         computed:{
             rightItems(){
-                if(this.leftSelected && this.leftSelected.children){
-                    return this.leftSelected.children;
+                let currentSelected = this.selected[this.level];
+                if(currentSelected && currentSelected.children){
+                    return currentSelected.children;
                 }else{
                     return null
                 }
+            }
+        },
+        methods:{
+            onClickLabel(item){
+                // this.selected = []
+                // 直接这样赋值 是不生效的 this.selected[0]
+                // this.selected[this.level] = item
+
+                // 精髓
+                // this.$set(this.selected,this.level,item)
+
+                // 但是我们不能改 props 的数据 改props就是 垃圾
+                // 要用 eventBus
+                let copy = JSON.parse(JSON.stringify(this.selected));
+                copy[this.level] = item
+                // 将完整的值返回
+                this.$emit('update:selected',copy);
+            },
+            onUpdateSelected(newSelected){
+                this.$emit('update:selected',newSelected)
             }
         }
     }

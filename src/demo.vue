@@ -1,6 +1,10 @@
 <template>
     <div>
-        <g-cascader :source="source" popover-height="200px"></g-cascader>
+        {{selected}}
+        <g-cascader :source="source" popover-height="200px"
+                    :selected="selected" :level="0"
+                    @update:selected="selected = $event"
+        ></g-cascader>
     </div>
 </template>
 
@@ -13,6 +17,7 @@
         },
         data(){
             return {
+                selected:[],
                 source:[
                     {name:"浙江",children:[
                             {name:"杭州",
