@@ -1,8 +1,5 @@
 <template>
     <div class="cascaderItem" :style="{height:height}">
-        <div>
-            level:{{level}}
-        </div>
         <div class="left">
             <div class="label" v-for="item in items" @click="onClickLabel(item)">
                 {{item.name}}
