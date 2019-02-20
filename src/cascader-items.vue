@@ -63,8 +63,16 @@
                 // 但是我们不能改 props 的数据 改props就是 垃圾
                 // 要用 eventBus
                 let copy = JSON.parse(JSON.stringify(this.selected));
-                copy[this.level] = item
-                // 将完整的值返回
+                copy[this.level] = item;
+                // 返回不包含后面层级的值
+                /*
+                var a = [1,2,3,4,5]
+                    a.splice(3);
+                    a <==> [1,2,3]
+
+                */
+
+                copy.splice(this.level + 1);
                 this.$emit('update:selected',copy);
             },
             onUpdateSelected(newSelected){
