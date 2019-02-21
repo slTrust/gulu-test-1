@@ -88,9 +88,12 @@
         height:100px;
         .left{
             padding:.3em 0;
+            overflow: auto;
+            height: 100%;
         }
         .right{
             border-left:1px solid $border-color-light;
+            height: 100%;
         }
         .label{
             padding: .3em 1em;
