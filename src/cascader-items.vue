@@ -40,12 +40,24 @@
         },
         computed:{
             rightItems(){
-                let currentSelected = this.selected[this.level];
-                if(currentSelected && currentSelected.children){
-                    return currentSelected.children;
-                }else{
-                    return null
+                console.log(this.selected)
+                console.log('------')
+                console.log(this.selected[this.level])
+                if(this.selected && this.selected[this.level]){
+                    let selected = this.items.filter((item)=>{
+                        return item.name === this.selected[this.level].name
+                    })
+                    if(selected && selected[0].children && selected[0].children.length > 0){
+                        return selected[0].children
+                    }
                 }
+                // computed 依赖的 selected 和 level 没有变 那么就不会更新 即使数据是错的
+                // let currentSelected = this.selected[this.level];
+                // if(currentSelected && currentSelected.children){
+                //     return currentSelected.children;
+                // }else{
+                //     return null
+                // }
             }
         },
         methods:{

@@ -6,9 +6,10 @@
         <p>{{selected && selected[1] && selected[1].name || '空'}}</p>
         <p>{{selected && selected[2] && selected[2].name || '空'}}</p>
         <div style="padding:20px;">
-            <g-cascader :source="source" popover-height="200px"
-                        :selected="selected" :level="0"
-                        @update:selected="selected = $event"
+            <g-cascader :source.sync="source" popover-height="200px"
+                        :selected.sync="selected"
+                        @update:selected="xxx"
+                        :load-data="loadData"
             ></g-cascader>
         </div>
 
@@ -19,10 +20,25 @@
     import Cascader from './cascader';
     import db from './db'
 
-    function ajax(parentId=0){
-        return db.filter((item)=>item.parent_id==parentId)
+    function ajax(parentId=0,success,fail){
+        let result = db.filter((item)=>item.parent_id==parentId)
+        let id = setTimeout(()=>{
+            success(result)
+        },300)
+        return id;
     }
-    console.log(ajax());
+
+    function ajax2(parentId=0){
+        return new Promise((success,fail)=>{
+            setTimeout(()=>{
+                let result =  db.filter((item)=>item.parent_id==parentId)
+                success(result);
+            },300)
+
+        })
+
+    }
+
     export default {
         name: "demo",
         components:{
@@ -31,7 +47,35 @@
         data(){
             return {
                 selected:[],
-                source:ajax()
+                source:[]
+            }
+        },
+        created(){
+            ajax(0,(result)=>{
+                this.source = result
+            })
+
+            /*
+            // promise 版
+            ajax2(0).then((result)=>{
+                this.source = result
+            })
+            */
+        },
+        methods:{
+            xxx(){
+                console.log(this.selected)
+                ajax2(this.selected[0].id).then(res=>{
+                    let lastLevelSelected = this.source.filter(item=>item.id === this.selected[0].id)[0]
+                    // lastLevelSelected.children = res;
+                    this.$set(lastLevelSelected,'children',res)
+                })
+            },
+            loadData(node,callback){
+                let {id,name,parent_id} = node;
+                ajax2(id).then(res=>{
+                    callback(res)
+                })
             }
         }
     }
