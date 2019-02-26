@@ -2,8 +2,9 @@
     <div class="cascaderItem" :style="{height:height}">
         <div class="left">
             <div class="label" v-for="item in items" @click="onClickLabel(item)">
-                {{item.name}}
-                <icon class="icon" v-if="item.children" name="right"></icon>
+                <span class="name">{{item.name}}</span>
+                <!-- 判断是否是叶子节点  如果是动态加载就判断isLeaf 否则 判断children -->
+                <icon class="icon" v-if="rightArrowVisible(item)" name="right"></icon>
             </div>
         </div>
         <div class="right" v-if="rightItems">
@@ -36,6 +37,9 @@
             level:{
                 type:Number,
                 default:0
+            },
+            loadData:{
+                type:Function
             }
         },
         computed:{
@@ -58,7 +62,7 @@
                 // }else{
                 //     return null
                 // }
-            }
+            },
         },
         methods:{
             onClickLabel(item){
@@ -86,6 +90,10 @@
             },
             onUpdateSelected(newSelected){
                 this.$emit('update:selected',newSelected)
+            },
+            rightArrowVisible(item){
+                return this.loadData? !item.isLeaf : item.children
+
             }
         }
     }
@@ -108,11 +116,19 @@
             height: 100%;
         }
         .label{
-            padding: .3em 1em;
+            padding: .5em 1em;
             display: flex;
             align-items: center;
+            cursor:pointer;
+            &:hover{
+                background: $grey;
+            }
+            > .name{
+                margin-right: 1em;
+                user-select:none;
+            }
             .icon{
-                margin-left:1em;
+                margin-left:auto;
                 transform: scale(0.9);
             }
         }
