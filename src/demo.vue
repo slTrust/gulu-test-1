@@ -8,18 +8,17 @@
         <div style="padding:20px;">
             <g-cascader :source.sync="source" popover-height="200px"
                         :selected.sync="selected"
-                        @update:selected="xxx"
-                        :loadData="loadData"
+                        :load-data="loadData"
             ></g-cascader>
         </div>
 
-        <div style="padding:20px;">
-            <g-cascader :source.sync="source" popover-height="200px"
-                        :selected.sync="selected"
-                        @update:selected="xxx"
-                        :loadData="loadData"
-            ></g-cascader>
-        </div>
+        <!--<div style="padding:20px;">-->
+            <!--<g-cascader :source.sync="source" popover-height="200px"-->
+                        <!--:selected.sync="selected"-->
+                        <!--@update:selected="xxx"-->
+                        <!--:load-data="loadData"-->
+            <!--&gt;</g-cascader>-->
+        <!--</div>-->
 
     </div>
 </template>
@@ -84,15 +83,13 @@
         },
         methods:{
             xxx(){
-
                 ajax2(this.selected[0].id).then(res=>{
                     let lastLevelSelected = this.source.filter(item=>item.id === this.selected[0].id)[0]
                     // lastLevelSelected.children = res;
                     this.$set(lastLevelSelected,'children',res)
                 })
             },
-            loadData(node,callback){
-                let {id,name,parent_id} = node;
+            loadData({id},callback){
                 ajax2(id).then(res=>{
                     callback(res)
                 })

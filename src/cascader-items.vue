@@ -1,23 +1,27 @@
 <template>
-    <div class="cascaderItem" :style="{height:height}">
+    <div class="cascaderItem" :style="{height: height}">
         <div class="left">
             <div class="label" v-for="item in items" @click="onClickLabel(item)">
                 <span class="name">{{item.name}}</span>
-                <!-- 判断是否是叶子节点  如果是动态加载就判断isLeaf 否则 判断children -->
-                <icon class="icon" v-if="rightArrowVisible(item)" name="right"></icon>
+                <span class="icons">
+          <template v-if="item.name === loadingItem.name">
+            <icon class="loading" name="loading"></icon>
+          </template>
+          <template v-else>
+            <!-- 判断是否是叶子节点  如果是动态加载就判断isLeaf 否则 判断children -->
+            <icon class="next" v-if="rightArrowVisible(item)" name="right"></icon>
+          </template>
+        </span>
             </div>
         </div>
         <div class="right" v-if="rightItems">
-            <gulu-cascader-item :items="rightItems"
-                                :height="height"
-                                :level="level+1"
-                                :selected="selected"
-                                @update:selected="onUpdateSelected"
-            ></gulu-cascader-item>
+            <gulu-cascader-item ref="right" :items="rightItems" :height="height"
+                                 :loading-item="loadingItem"
+                                 :load-data="loadData"
+                                 :level="level+1" :selected="selected" @update:selected="onUpdateSelected"></gulu-cascader-item>
         </div>
     </div>
 </template>
-
 <script>
     import Icon from './icon'
     export default {
@@ -40,6 +44,10 @@
             },
             loadData:{
                 type:Function
+            },
+            loadingItem:{
+                type:Object,
+                default:()=>({})
             }
         },
         computed:{
@@ -125,9 +133,12 @@
                 margin-right: 1em;
                 user-select:none;
             }
-            .icon{
+            .icons{
                 margin-left:auto;
-                transform: scale(0.9);
+                .next{ transform: scale(0.9);}
+                .loading{
+                    animation: spin 2s infinite linear;
+                }
             }
         }
     }
