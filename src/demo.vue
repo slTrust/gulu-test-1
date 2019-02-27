@@ -13,12 +13,21 @@
             ></g-cascader>
         </div>
 
+        <div style="padding:20px;">
+            <g-cascader :source.sync="source" popover-height="200px"
+                        :selected.sync="selected"
+                        @update:selected="xxx"
+                        :loadData="loadData"
+            ></g-cascader>
+        </div>
+
     </div>
 </template>
 
 <script>
     import Cascader from './cascader';
     import db from './db'
+    import {removeListener} from './click-outside'
 
     function ajax(parentId=0,success,fail){
         let result = db.filter((item)=>item.parent_id==parentId)
@@ -68,6 +77,10 @@
                 this.source = result
             })
             */
+
+        },
+        destroyed(){
+            removeListener()
         },
         methods:{
             xxx(){

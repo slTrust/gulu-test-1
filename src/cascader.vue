@@ -1,5 +1,5 @@
 <template>
-    <div class="cascader" ref="cascader">
+    <div class="cascader" ref="cascader" v-click-outside="close">
         <div class="trigger" @click="toggle">
             {{result ||'&nbsp;'}}
         </div>
@@ -15,9 +15,13 @@
 </template>
 
 <script>
+    import ClickOutside from './click-outside'
     import CascaderItems from './cascader-items'
     export default {
         name: "GuluCascader",
+        directives:{
+            ClickOutside
+        },
         components:{
             CascaderItems
         },
@@ -54,13 +58,9 @@
             },
             open(){
                 this.popoverVisible = true;
-                this.$nextTick(()=>{
-                    document.addEventListener('click',this.onClickDocument)
-                })
             },
             close(){
                 this.popoverVisible = false;
-                document.removeEventListener('click',this.onClickDocument)
             },
             toggle(){
                 if(this.popoverVisible){
