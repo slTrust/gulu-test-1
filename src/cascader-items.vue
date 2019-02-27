@@ -44,9 +44,6 @@
         },
         computed:{
             rightItems(){
-                console.log(this.selected)
-                console.log('------')
-                console.log(this.selected[this.level])
                 if(this.selected && this.selected[this.level]){
                     let selected = this.items.filter((item)=>{
                         return item.name === this.selected[this.level].name
@@ -120,6 +117,7 @@
             display: flex;
             align-items: center;
             cursor:pointer;
+            white-space: nowrap;
             &:hover{
                 background: $grey;
             }

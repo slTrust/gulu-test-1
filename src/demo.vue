@@ -59,7 +59,6 @@
         },
         created(){
             ajax2(0).then((result)=>{
-                console.log(result)
                 this.source = result
             })
 
@@ -72,7 +71,7 @@
         },
         methods:{
             xxx(){
-                console.log(this.selected)
+
                 ajax2(this.selected[0].id).then(res=>{
                     let lastLevelSelected = this.source.filter(item=>item.id === this.selected[0].id)[0]
                     // lastLevelSelected.children = res;
