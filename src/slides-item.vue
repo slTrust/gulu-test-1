@@ -39,7 +39,7 @@
         width: 100%;
     }
     .slide-enter-active, .slide-leave-active{
-        transition: all 1s;
+        transition: all 0.5s;
     }
     /* 进来在右边 100% */
     .slide-enter{
@@ -53,11 +53,11 @@
     }
 
     .slide-enter.reverse{
-        transform: translateX(-100%);
+        transform: translateX(-100%) scale(0.5);
         opacity: 0;
     }
     .slide-leave-to.reverse{
-        transform: translateX(100%);
+        transform: translateX(100%) scale(0.5);
         opacity: 0;
     }
 

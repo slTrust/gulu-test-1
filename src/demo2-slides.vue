@@ -41,6 +41,9 @@
     .box{
         height: 350px;
         background: #ddd;
-        border:1px solid red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
     }
 </style>
