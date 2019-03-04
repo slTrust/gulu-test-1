@@ -11,7 +11,7 @@
             <span v-for="n in childrenLength" :class="{active:selectedIndex === n - 1}"
                 @click="select(n-1)"
             >
-                {{n-1}}
+                {{n}}
             </span>
         </div>
     </div>
@@ -103,11 +103,13 @@
                 let selected = this.getSelected();
                 this.$children.forEach((vm)=>{
                     let reverse = this.selectedIndex > this.lastSelectedIndex ? false : true
-                    if(this.lastSelectedIndex === this.$children - 1 && this.selectedIndex ===0 ){
-                        reverse = false
-                    }
-                    if(this.lastSelectedIndex === 0 && this.selectedIndex === this.$children.length - 1 ){
-                        reverse = true
+                    if(this.timerId){
+                        if(this.lastSelectedIndex === this.$children - 1 && this.selectedIndex ===0 ){
+                            reverse = false
+                        }
+                        if(this.lastSelectedIndex === 0 && this.selectedIndex === this.$children.length - 1 ){
+                            reverse = true
+                        }
                     }
                     vm.reverse = reverse
                     this.$nextTick(()=>{
@@ -125,9 +127,29 @@
     &-window{ overflow: hidden; }
     &-wrapper{ position: relative; }
     &-dots{
+        padding:8px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         > span{
+            width:20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background: #ddd;
+            margin:0 8px;
+            font-size: 12px;
+            &.hover{
+                cursor: pointer;
+            }
             &.active{
-                background: red;
+                background: black;
+                color:white;
+                &:hover{
+                    cursor: default;
+                }
             }
         }
     }
