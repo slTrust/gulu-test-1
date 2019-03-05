@@ -15,7 +15,9 @@
                 <g-icon name="left"></g-icon>
             </span>
             <span v-for="n in childrenLength" :class="{active:selectedIndex === n - 1}"
-                @click="select(n-1)"
+                  :key="n" :data-index="n-1"
+                  @click="select(n-1)"
+
             >
                 {{n}}
             </span>
@@ -37,6 +39,10 @@
             autoPlay:{
                 type:Boolean,
                 default:true
+            },
+            autoPLayDelay:{
+                type:Number,
+                default:3000
             }
         },
         data(){
@@ -56,7 +62,9 @@
             //直接修改 props 会得到警告 迫不得已 将slide-item里的visible 由 props 换成 data
 
             this.updateChildren();
-            this.playAutomatically();
+            if(this.autoPlay){
+                this.playAutomatically();
+            }
             this.childrenLength = this.items.length
         },
         updated() {
@@ -132,9 +140,9 @@
                     let index = this.names.indexOf(this.getSelected())
                     let newIndex = index + 1
                     this.select(newIndex) // 告诉外界选中 newIndex
-                    this.timerId = setTimeout(()=>{ run() },3000)
+                    this.timerId = setTimeout(()=>{ run() },this.autoPLayDelay)
                 }
-                this.timerId = setTimeout(run,3000)
+                this.timerId = setTimeout(run,this.autoPLayDelay)
             },
             pause(){
                 window.clearTimeout(this.timerId);
