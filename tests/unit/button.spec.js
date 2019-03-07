@@ -1,7 +1,6 @@
 import chai,{ expect } from 'chai'
 import { shallowMount,mount } from '@vue/test-utils'
-import Button from '@/button.vue'
-import Vue from 'vue'
+import Button from '../../src/button/button'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 chai.use(sinonChai)

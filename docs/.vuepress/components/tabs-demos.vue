@@ -26,11 +26,11 @@
 </template>
 
 <script>
-    import Tabs from '../../../src/tabs';
-    import TabsHead from '../../../src/tabs-head';
-    import TabsBody from '../../../src/tabs-body';
-    import TabsItem from '../../../src/tabs-item';
-    import TabsPane from '../../../src/tabs-pane';
+    import Tabs from '../../../src/tabs/tabs';
+    import TabsHead from '../../../src/tabs/tabs-head';
+    import TabsBody from '../../../src/tabs/tabs-body';
+    import TabsItem from '../../../src/tabs/tabs-item';
+    import TabsPane from '../../../src/tabs/tabs-pane';
     export default {
         name:'sss',
         components:{

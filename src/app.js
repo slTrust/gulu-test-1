@@ -3,22 +3,22 @@ import Button from './button/button';
 import Icon from './icon';
 import ButtonGroup from './button/button-group';
 import Input from './input';
-import Row from './row';
-import Col from './col';
-import Layout from './layout';
-import Header from './header';
-import Sider from './sider';
-import Content from './content';
-import Footer from './footer';
+import Row from './grid/row';
+import Col from './grid/col';
+import Layout from './layout/layout';
+import Header from './layout/header';
+import Sider from './layout/sider';
+import Content from './layout/content';
+import Footer from './layout/footer';
 import plugin from './plugin'
-import Tabs from './tabs';
-import TabsHead from './tabs-head';
-import TabsBody from './tabs-body';
-import TabsItem from './tabs-item';
-import TabsPane from './tabs-pane';
+import Tabs from './tabs/tabs';
+import TabsHead from './tabs/tabs-head';
+import TabsBody from './tabs/tabs-body';
+import TabsItem from './tabs/tabs-item';
+import TabsPane from './tabs/tabs-pane';
 import Popover from './popover';
-import Collapse from './collapse';
-import CollapseItem from './collapse-item';
+import Collapse from './collapse/collapse';
+import CollapseItem from './collapse/collapse-item';
 import Cascader from './cascader'
 
 
