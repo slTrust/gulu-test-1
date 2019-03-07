@@ -13,7 +13,7 @@
 <script>
     import Vue from 'vue';
     import plugin from '../../../src/plugin.js';
-    import Button from '../../../src/button';
+    import Button from '../../../src/button/button';
     Vue.use(plugin);
     export default {
         components:{
