@@ -20,8 +20,8 @@
                 </g-sub-nav>
             </g-sub-nav>
             <g-nav-item name="about">关于</g-nav-item>
-
         </g-nav>
+        测试测试测试测试测试测试
     </div>
 </template>
 
