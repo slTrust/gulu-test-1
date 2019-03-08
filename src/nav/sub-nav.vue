@@ -31,8 +31,7 @@
         position: relative;
         > span{
             padding: 10px 20px;
-            display: inline-block;
-            vertical-align: top;
+            display: block;
         }
         &-popover{
             position: absolute;
@@ -41,6 +40,10 @@
             border:1px solid red;
             white-space: nowrap;
         }
-
+    }
+    .g-sub-nav .g-sub-nav .g-sub-nav-popover{
+        top:0;
+        left:100%;
+        margin-left:8px;
     }
 </style>

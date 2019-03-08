@@ -15,7 +15,6 @@
             }
         },
         created(){
-            console.log(this.root)
             this.root.addItem(this);
         },
         data(){

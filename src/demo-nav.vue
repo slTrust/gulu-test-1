@@ -7,7 +7,17 @@
                 <template slot="title">学习</template>
                 <g-nav-item name="java">后端学习</g-nav-item>
                 <g-nav-item name="linux">运维学习</g-nav-item>
-                <g-nav-item name="front">前端学习</g-nav-item>
+                <g-sub-nav>
+                    <template slot="title">前端学习(继续嵌套)</template>
+                    <g-nav-item name="react">React</g-nav-item>
+                    <g-nav-item name="ng">Angular</g-nav-item>
+                    <g-sub-nav>
+                        <template slot="title">vue(继续嵌套)</template>
+                        <g-nav-item name="cli">vue-cli</g-nav-item>
+                        <g-nav-item name="ssr">vue ssr</g-nav-item>
+                        <g-nav-item name="press">vue press</g-nav-item>
+                    </g-sub-nav>
+                </g-sub-nav>
             </g-sub-nav>
             <g-nav-item name="about">关于</g-nav-item>
 
