@@ -7,6 +7,12 @@
 <script>
     export default {
         name: "GuluNav",
+        provide(){
+            // 注入祖先
+            return {
+                root:this
+            }
+        },
         props:{
             selected:{
                 type:Array,
@@ -15,6 +21,11 @@
             multiple:{
                 type:Boolean,
                 default:false
+            }
+        },
+        data(){
+            return {
+                items:[]
             }
         },
         updated(){
@@ -26,11 +37,16 @@
             this.listenToChildren()
         },
         computed:{
-            items(){
-                return this.$children.filter(vm=> vm.$options.name==='GuluNavItem')
-            }
+            // 改用 依赖注入
+            // items(){
+            //     return this.$children.filter(vm=> vm.$options.name==='GuluNavItem')
+            // }
         },
         methods:{
+            // 用于 subNav 的多重嵌套的条件
+            addItem(vm){
+                this.items.push(vm)
+            },
             updateChildren(){
                 this.items.forEach(vm=>{
                     if(this.selected.indexOf(vm.name)>=0){

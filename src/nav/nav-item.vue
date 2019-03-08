@@ -7,11 +7,16 @@
 <script>
     export default {
         name: "GuluNavItem",
+        inject:['root'], //注入 祖先 这样就可以调用 root提供的方法
         props:{
             name:{
                 type:String,
                 required:true
             }
+        },
+        created(){
+            console.log(this.root)
+            this.root.addItem(this);
         },
         data(){
             return {
