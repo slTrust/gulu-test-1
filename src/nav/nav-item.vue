@@ -24,11 +24,14 @@
         },
         methods:{
             onClick(){
+                // 先清空 namePath 然后在更新它
+                this.root.namePath = []
+                // 点击时 主动调用父级的一个函数
+                this.$parent.updateNamePath && this.$parent.updateNamePath();
+
+                // 放到最后是为了保证数据是最新
                 this.$emit('add:selected',this.name)
 
-
-                // 点击时 主动调用父级的一个函数
-                this.$parent.x && this.$parent.x();
             }
         }
     }

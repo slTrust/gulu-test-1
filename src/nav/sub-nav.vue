@@ -1,5 +1,5 @@
 <template>
-    <div class="g-sub-nav" :class="{active}">
+    <div class="g-sub-nav" :class="{active}" v-click-outsite="close">
         <span @click="onClick">
             <slot name="title"></slot>
         </span>
@@ -11,8 +11,11 @@
 </template>
 
 <script>
+    import ClickOutsite from '../click-outside'
     export default {
         name: "GuluSubNav",
+        directives:{ClickOutsite},
+        inject:['root'],
         props:{
           name:{
               type:String,
@@ -22,16 +25,29 @@
         data(){
             return {
                 open:false,
-                active:false
+            }
+        },
+        computed:{
+            active(){
+                return this.root.namePath.indexOf(this.name) >= 0 ? true : false
             }
         },
         methods:{
             onClick(){
                 this.open = !this.open;
             },
-            x(){
-                console.log('x');
-                this.active = true; //激活一下
+            updateNamePath(){
+                // 不管父亲有木有 x 都要存name
+                this.root.namePath.unshift(this.name);
+                // 继续去找父级
+                if(this.$parent.updateNamePath){
+                    this.$parent.updateNamePath()
+                }else{
+
+                }
+            },
+            close(){
+                this.open = false;
             }
         }
     }
