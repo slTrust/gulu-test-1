@@ -126,4 +126,49 @@ describe('validate', () => {
         expect(errors.email.maxLength).to.exist
     })
 
+    it(' many keys  ',()=>{
+        let data = {
+            email:'1234567890111111'
+        }
+
+        let rules = [
+            {key:'email',required:true,pattern:'email',maxLength:10,minLength: 5,
+                hasNumber:true,hasLowerCaseAndUpperCase:true,hasDot:true,hasUnderscore:true,
+                hasFrank:true
+            }
+        ]
+        // let errors = validate(data,rules)
+        // expect(errors.email.required).to.exist
+        // expect(errors.email.maxLength).to.not.exist
+        // expect(errors.email.minLength).to.exist
+        let fn = ()=>{
+            validate(data,rules)
+        }
+        // 如果规则不存在 期待报错
+        expect(fn).to.throw()
+
+    })
+
+    it(' 用户自定义校验规则  ',()=>{
+        let data = {
+            email:'abc'
+        }
+        validate.hasNumber = (value)=>{
+            if(!/\d/.test(value)){
+                return '必须含有数字'
+            }
+        }
+        let rules = [
+            { key:'email',required:true, hasNumber:true }
+        ]
+        let errors
+        let fn = ()=>{
+            errors = validate(data,rules)
+        }
+        // 如果规则不存在 期待报错
+        expect(fn).to.not.throw()
+        expect(errors.email.hasNumber).to.eq('必须含有数字')
+
+    })
+
 })
