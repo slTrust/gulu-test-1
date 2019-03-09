@@ -1,6 +1,5 @@
 <template>
     <div class="g-nav">
-        {{namePath}}
         <slot></slot>
     </div>
 </template>
@@ -87,5 +86,6 @@
         border-bottom: 1px solid $grey;
         color:$color;
         cursor: default;
+        user-select: none;
     }
 </style>

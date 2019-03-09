@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{selected}}
         <g-nav :selected.sync="selected">
             <g-nav-item name="home">首页</g-nav-item>
             <g-sub-nav name="learn">

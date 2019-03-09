@@ -1,8 +1,12 @@
 <template>
     <div class="g-sub-nav" :class="{active}" v-click-outsite="close">
-        <span @click="onClick">
+        <span class="g-sub-nav-label" @click="onClick">
             <slot name="title"></slot>
+            <span class="g-sub-nav-icon" :class="{open}">
+                <g-icon name="right"></g-icon>
+            </span>
         </span>
+
         <!-- 此处不能用 v-if -->
         <div class="g-sub-nav-popover" v-show="open">
             <slot></slot>
@@ -12,9 +16,11 @@
 
 <script>
     import ClickOutsite from '../click-outside'
+    import GIcon from '../icon'
     export default {
         name: "GuluSubNav",
         directives:{ClickOutsite},
+        components:{GIcon},
         inject:['root'],
         props:{
           name:{
@@ -68,9 +74,12 @@
                 width:100%;
             }
         }
-        > span{
+        &-label{
             padding: 10px 20px;
             display: block;
+        }
+        &-icon{
+            display: none;
         }
         &-popover{
             background: white;
@@ -86,9 +95,31 @@
             min-width: 8em;
         }
     }
-    .g-sub-nav .g-sub-nav .g-sub-nav-popover{
-        top:0;
-        left:100%;
-        margin-left:8px;
+    .g-sub-nav .g-sub-nav {
+        &.active{
+            &::after{
+               display: none;
+            }
+        }
+        .g-sub-nav-popover{
+            top:0;
+            left:100%;
+            margin-left:8px;
+        }
+        /* 二级菜单才可见 展开收起 */
+        .g-sub-nav-label{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .g-sub-nav-icon {
+            display: inline-flex;
+            margin-left: 1em;
+            svg{fill:$light-color;}
+            transition: transform 250ms;
+            &.open{
+                transform:rotate(180deg);
+            }
+        }
     }
 </style>
