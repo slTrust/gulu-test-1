@@ -114,4 +114,16 @@ describe('validate', () => {
         expect(errors.email.pattern).to.exist
     })
 
+    it(' maxLength  ',()=>{
+        let data = {
+            email:'1234567890111111'
+        }
+
+        let rules = [
+            {key:'email',pattern:'email',maxLength:10}
+        ]
+        let errors = validate(data,rules)
+        expect(errors.email.maxLength).to.exist
+    })
+
 })
