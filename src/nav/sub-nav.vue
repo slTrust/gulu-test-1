@@ -1,5 +1,5 @@
 <template>
-    <div class="g-sub-nav">
+    <div class="g-sub-nav" :class="{active}">
         <span @click="onClick">
             <slot name="title"></slot>
         </span>
@@ -13,14 +13,25 @@
 <script>
     export default {
         name: "GuluSubNav",
+        props:{
+          name:{
+              type:String,
+              required:true
+          }
+        },
         data(){
             return {
-                open:false
+                open:false,
+                active:false
             }
         },
         methods:{
             onClick(){
                 this.open = !this.open;
+            },
+            x(){
+                console.log('x');
+                this.active = true; //激活一下
             }
         }
     }
@@ -30,6 +41,17 @@
     @import "var";
     .g-sub-nav{
         position: relative;
+        &.active{
+            position: relative;
+            &::after{
+                content:'';
+                position: absolute;
+                bottom:0px;
+                left:0;
+                border-bottom:2px solid $blue;
+                width:100%;
+            }
+        }
         > span{
             padding: 10px 20px;
             display: block;

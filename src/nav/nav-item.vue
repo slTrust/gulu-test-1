@@ -25,6 +25,10 @@
         methods:{
             onClick(){
                 this.$emit('add:selected',this.name)
+
+
+                // 点击时 主动调用父级的一个函数
+                this.$parent.x && this.$parent.x();
             }
         }
     }
@@ -48,9 +52,9 @@
     }
 
     .g-sub-nav .g-nav-item{
-
         &.selected{
             color:$color;
+            background: $grey;
             &::after{
                 display: none;
             }
