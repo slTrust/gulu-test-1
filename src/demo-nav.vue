@@ -24,7 +24,9 @@
 
         <h2>水平导航</h2>
         <g-nav :selected.sync="selected">
-            <g-nav-item name="home">首页</g-nav-item>
+            <g-nav-item name="home">
+                <a href="https://www.baidu.com" target="_blank">首页</a>
+            </g-nav-item>
             <g-sub-nav name="learn">
                 <template slot="title">学习</template>
                 <g-nav-item name="java">后端学习</g-nav-item>

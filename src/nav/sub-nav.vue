@@ -1,8 +1,8 @@
 <template>
-    <div class="g-sub-nav" :class="{active}" v-click-outsite="close">
+    <div class="g-sub-nav" :class="{active,vertical}" v-click-outsite="close">
         <span class="g-sub-nav-label" @click="onClick">
             <slot name="title"></slot>
-            <span class="g-sub-nav-icon" :class="{open}">
+            <span class="g-sub-nav-icon" :class="{open,vertical}">
                 <g-icon name="right"></g-icon>
             </span>
         </span>
@@ -102,23 +102,22 @@
 
 <style scoped lang="scss">
     @import "var";
-    .x-enter-active, .x-leave-active {
-    }
-    .x-enter, .x-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    }
     .g-sub-nav{
         position: relative;
-        &.active{
-            position: relative;
-            &::after{
-                content:'';
-                position: absolute;
-                bottom:0px;
-                left:0;
-                border-bottom:2px solid $blue;
-                width:100%;
+        &:not(.vertical){
+            &.active{
+                position: relative;
+                &::after{
+                    content:'';
+                    position: absolute;
+                    bottom:0px;
+                    left:0;
+                    border-bottom:2px solid $blue;
+                    width:100%;
+                }
             }
         }
+
         &-label{
             padding: 10px 20px;
             display: block;
@@ -127,6 +126,7 @@
             display: none;
         }
         &-popover{
+            transition: height 250ms;
             background: white;
             position: absolute;
             top:100%;
@@ -143,7 +143,6 @@
                 border-radius: 0;
                 border:none;
                 box-shadow: none;
-                transition: height 250ms;
                 overflow: hidden;
             }
         }
@@ -166,10 +165,16 @@
             justify-content: space-between;
         }
         .g-sub-nav-icon {
+            transition: transform 250ms;
             display: inline-flex;
             margin-left: 1em;
             svg{fill:$light-color;}
-            transition: transform 250ms;
+            &.vertical{
+                transform:rotate(90deg);
+                &.open{
+                    transform:rotate(270deg);
+                }
+            }
             &.open{
                 transform:rotate(180deg);
             }
