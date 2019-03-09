@@ -7,10 +7,13 @@
             </span>
         </span>
 
-        <!-- 此处不能用 v-if -->
-        <div class="g-sub-nav-popover" v-show="open">
-            <slot></slot>
-        </div>
+        <transition @enter="enter" @leave="leave" @after-leave="afterLeave" @after-enter="afterEnter">
+            <!-- 此处不能用 v-if -->
+            <div class="g-sub-nav-popover" v-show="open" :class="{vertical}">
+                <slot></slot>
+            </div>
+        </transition>
+
     </div>
 </template>
 
@@ -21,7 +24,7 @@
         name: "GuluSubNav",
         directives:{ClickOutsite},
         components:{GIcon},
-        inject:['root'],
+        inject:['root','vertical'],
         props:{
           name:{
               type:String,
@@ -54,6 +57,37 @@
             },
             close(){
                 this.open = false;
+            },
+            enter(el,done){
+                let {height} = el.getBoundingClientRect() // 此时不是0
+                el.style.height = 0; // 还原为0
+                el.getBoundingClientRect()
+                el.style.height = `${height}px`
+                // 如果你用同步的方式对一个css进行设置 那么不管你中间使用了多少次，浏览器会把所有的结果只记下最后一次
+                // 这样就没有动画了
+
+                // done() 立刻调用 done导致动画瞬间完成
+                el.addEventListener('transitionend',()=>{
+                    done()
+                })
+            },
+            leave(el,done){
+                let {height} = el.getBoundingClientRect() // 此时不是0
+                el.style.height = `${height}px`
+                el.getBoundingClientRect()
+                el.style.height = 0;
+                // done() 立刻调用 done导致收缩动画瞬间完成
+                el.addEventListener('transitionend',()=>{
+                    done()
+                })
+            },
+            afterLeave(el){
+                // 必须要有这个动画 因为 sub-nav可能还有子菜单 因为上面高度写死了 120 导致 子菜单显示不了
+                el.style.height = 'auto';
+            },
+            afterEnter(el){
+                // 必须要有这个动画 因为 sub-nav可能还有子菜单 因为上面高度写死了 120 导致 子菜单显示不了
+                el.style.height = 'auto';
             }
         }
     }
@@ -61,6 +95,10 @@
 
 <style scoped lang="scss">
     @import "var";
+    .x-enter-active, .x-leave-active {
+    }
+    .x-enter, .x-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    }
     .g-sub-nav{
         position: relative;
         &.active{
@@ -93,6 +131,14 @@
             color:$light-color;
             font-size: $font-size;
             min-width: 8em;
+            &.vertical{
+                position: static;
+                border-radius: 0;
+                border:none;
+                box-shadow: none;
+                transition: height 1s;
+                overflow: hidden;
+            }
         }
     }
     .g-sub-nav .g-sub-nav {

@@ -1,5 +1,5 @@
 <template>
-    <div class="g-nav">
+    <div class="g-nav" :class="{vertical}">
         <slot></slot>
     </div>
 </template>
@@ -10,7 +10,8 @@
         provide(){
             // 注入祖先
             return {
-                root:this
+                root:this,
+                vertical:this.vertical
             }
         },
         props:{
@@ -19,6 +20,10 @@
                 default:() => [] //默认返回空数组
             },
             multiple:{
+                type:Boolean,
+                default:false
+            },
+            vertical:{
                 type:Boolean,
                 default:false
             }
@@ -87,5 +92,9 @@
         color:$color;
         cursor: default;
         user-select: none;
+        &.vertical{
+            flex-direction: column;
+            border: 1px solid $grey;
+        }
     }
 </style>
