@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>垂直导航</h2>
-        <g-nav :selected.sync="selected2" vertical style="width:200px;margin: 20px;">
+        <g-nav :selected.sync="selected2" vertical style="width:200px;margin: 20px;" @update:selected="onChange">
             <g-nav-item name="home">首页</g-nav-item>
             <g-sub-nav name="learn">
                 <template slot="title">学习</template>
@@ -46,6 +46,7 @@
             <g-nav-item name="about">关于</g-nav-item>
         </g-nav>
         测试测试测试测试测试测试
+        <p>用户选中了{{selected}}</p>
 
     </div>
 </template>
@@ -64,12 +65,19 @@
         },
         data(){
             return {
-                selected:['home'],
-                selected2:['home']
+                selected:'home',
+                selected2:'home'
             }
         },
         created(){
 
+        },
+        methods:{
+            onChange(selected){
+                if(selected ==='home'){
+                    alert('hi')
+                }
+            },
         }
     }
 </script>

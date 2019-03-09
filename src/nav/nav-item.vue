@@ -30,7 +30,7 @@
                 this.$parent.updateNamePath && this.$parent.updateNamePath();
 
                 // 放到最后是为了保证数据是最新
-                this.$emit('add:selected',this.name)
+                this.$emit('update:selected',this.name)
 
             }
         }
