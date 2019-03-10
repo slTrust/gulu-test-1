@@ -1,6 +1,11 @@
 <template>
     <div>
-        <g-pager :total-page="20" :current-page="1"></g-pager>
+        <g-pager :total-page="20" :current-page.sync="currentPage"></g-pager>
+
+        <h3>仅有一页也要显示</h3>
+        <g-pager :total-page="1" :current-page.sync="currentPage" :hide-if-one-page="false"></g-pager>
+
+
     </div>
 </template>
 
@@ -13,17 +18,13 @@
         },
         data(){
             return {
+                currentPage:1
             }
         },
         created(){
 
         },
         methods:{
-            onChange(selected){
-                if(selected ==='home'){
-                    alert('hi')
-                }
-            },
         }
     }
 </script>
