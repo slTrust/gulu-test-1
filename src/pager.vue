@@ -1,16 +1,30 @@
 <template>
     <div class="gulu-pager">
-        <span v-for="page in pages" class="gulu-pager-item"
-            :class="{active:page === currentPage,separator: page === '...'}"
-        >
-            {{page}}
+        <span class="gulu-pager-nav prev" :class="{disabled:currentPage===1}">
+            <g-icon name="left"></g-icon>
+        </span>
+        <template v-for="page in pages">
+            <template v-if="page===currentPage">
+                <span class="gulu-pager-item current">{{page}}</span>
+            </template>
+            <template v-else-if="page==='...'">
+                <g-icon class="gulu-pager-separator" name="dots"></g-icon>
+            </template>
+            <template v-else>
+                <span class="gulu-pager-item other">{{page}}</span>
+            </template>
+        </template>
+        <span class="gulu-pager-nav next" :class="{disabled:currentPage===totalPage}">
+            <g-icon name="right"></g-icon>
         </span>
     </div>
 </template>
 
 <script>
+    import GIcon from './icon'
     export default {
         name: "GuluPager",
+        components:{GIcon},
         props:{
             totalPage:{
                 type:Number,
@@ -30,7 +44,7 @@
                 this.currentPage,
                 this.currentPage - 1, this.currentPage - 2 ,
                 this.currentPage + 1 ,this.currentPage + 2
-            ];
+            ].filter((n)=> n>=1 && n<= this.totalPage);
 
             let u = unique(pages.sort((a,b)=> a-b))
             let u2 = u.reduce((prev,current,index,array)=>{
@@ -60,6 +74,16 @@
 <style scoped lang="scss">
     @import 'var';
     .gulu-pager{
+        $height:20px;
+        $width:20px;
+        $font-size: 12px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        &-separator{
+            width:$width;
+            font-size: $font-size;
+        }
         &-item{
             border:1px solid #e1e1e1;
             border-radius: $border-radius;
@@ -67,19 +91,32 @@
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            font-size: 12px;
-            min-width: 20px;
-            height: 20px;
+            font-size: $font-size;
+            min-width: $width;
+            height: $height;
             margin:0 4px;
             cursor:pointer;
-            &.separator{
-                border:none;
-            }
-            &.active,&:hover{
+            &.current,&:hover{
                 border-color:$blue;
             }
-            &.active{
+            &.current{
                 cursor:default;
+            }
+        }
+        &-nav{
+            margin:0 4px;
+            display:inline-flex;
+            justify-content: center;
+            align-items: center;
+            background: $grey;
+            width: $width;
+            height: $height;
+            border-radius: $border-radius;
+            font-size: $font-size;
+            &.disabled{
+                svg{
+                    fill: darken($grey,30%);
+                }
             }
         }
     }

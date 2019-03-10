@@ -1,6 +1,6 @@
 <template>
     <div>
-        <g-pager :total-page="20" :current-page="3"></g-pager>
+        <g-pager :total-page="20" :current-page="1"></g-pager>
     </div>
 </template>
 
@@ -28,6 +28,6 @@
     }
 </script>
 
-<style scoped>
+<style>
     *{margin:0;padding:0;box-sizing:border-box;}
 </style>
