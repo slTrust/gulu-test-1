@@ -1,7 +1,8 @@
 <template>
-    <div class="gulu-table-wrapper">
-        <table class="gulu-table" :class="{borderd,compact,striped}">
-            <thead>
+    <div class="gulu-table-wrapper"  ref="wrapper">
+        <div :style="{height,overflow:'auto'}">
+            <table class="gulu-table" :class="{borderd,compact,striped}" ref="table">
+                <thead>
                 <tr>
                     <th><input type="checkbox" @change="onChangeAllItems" ref="allChecked" :checked="areAllItemsSelected"></th>
                     <th v-if="numberVisible">#</th>
@@ -15,12 +16,12 @@
                         </div>
                     </th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr v-for="item,index in dataSource" :key="item.id">
                     <td>
                         <input type="checkbox" @change="onChangeItem(item,index,$event)"
-                            :checked="inSelectedItems(item)"
+                               :checked="inSelectedItems(item)"
                         >
                     </td>
                     <td v-if="numberVisible">{{index}}</td>
@@ -28,8 +29,9 @@
                         <td :key="column.field">{{item[column.field]}}</td>
                     </template>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
         <div  v-if="loading" class="gulu-table-loading">
             <g-icon name="loading"></g-icon>
         </div>
@@ -42,6 +44,9 @@
         name: "GuluTable",
         components:{GIcon},
         props:{
+            height:{
+                type:[Number,String]
+            },
             orderBy:{
                 type:Object,
                 default:()=>{return {}},
@@ -116,7 +121,37 @@
                 }
             }
         },
+        mounted(){
+            let table2 = this.$refs.table.cloneNode(true);
+            this.table2 = table2
+            table2.classList.add('gulu-table-copy')
+            this.$refs.wrapper.appendChild(table2)
+            this.updateHeadersWidth()
+
+            this.onWindowResize = ()=>{ this.updateHeadersWidth()}
+            window.addEventListener('resize',this.onWindowResize)
+        },
+        beforeDestroy(){
+            this.table2.remove()
+            window.removeEventListener('resize',this.onWindowResize)
+        },
         methods:{
+            updateHeadersWidth(){
+                let table2 = this.table2
+                let tableHeader = Array.from(this.$refs.table.children).filter(node=>node.tagName.toLowerCase()==='thead')[0]
+                let tableHeader2
+                Array.from(table2.children).map(node=>{
+                    if(node.tagName.toLowerCase() !== 'thead'){
+                        node.remove()
+                    }else{
+                        tableHeader2 = node;
+                    }
+                })
+                Array.from(tableHeader.children[0].children).map((th,i)=>{
+                    const {width} = th.getBoundingClientRect()
+                    tableHeader2.children[0].children[i].style.width = width + 'px'
+                })
+            },
             changeOrderBy(key){
                 const copy = JSON.parse(JSON.stringify(this.orderBy))
                 let oldValue = copy[key]
@@ -216,6 +251,7 @@
         }
         &-wrapper{
             position:relative;
+            overflow: auto;
         }
         &-loading{
             position: absolute;
@@ -232,6 +268,13 @@
                 height: 50px;
                 @include spin
             }
+        }
+        &-copy{
+            position: absolute;
+            top:0px;
+            left:0;
+            width:100%;
+            background: red;
         }
     }
 </style>

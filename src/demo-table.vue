@@ -8,9 +8,10 @@
                  compact
                  @update:orderBy="x"
                  :loading="loading"
+                 height="400px"
                  :selected-items.sync="selected"></g-table>
-        <g-table :columns="columns" :data-source="dataSource" borderd></g-table>
-        <g-table :columns="columns" :data-source="dataSource" :striped="false"></g-table>
+        <!--<g-table :columns="columns" :data-source="dataSource" borderd></g-table>-->
+        <!--<g-table :columns="columns" :data-source="dataSource" :striped="false"></g-table>-->
     </div>
 </template>
 
@@ -38,6 +39,20 @@
                     {id:2,name:'李四',score:99},
                     {id:3,name:'王五',score:100},
                     {id:4,name:'赵六',score:99},
+                    {id:5,name:'张三',score:100},
+                    {id:6,name:'李四',score:99},
+                    {id:7,name:'王五',score:100},
+                    {id:8,name:'赵六',score:99},
+                    {id:9,name:'张三',score:100},
+                    {id:10,name:'李四',score:99},
+                    {id:11,name:'王五',score:100},
+                    {id:12,name:'赵六',score:99},
+                    {id:13,name:'张三',score:100},
+                    {id:14,name:'李四',score:99},
+                    {id:15,name:'王五',score:100},
+                    {id:16,name:'赵六',score:99},
+                    {id:17,name:'张三',score:100},
+                    {id:18,name:'李四',score:99},
                 ]
             }
         },
