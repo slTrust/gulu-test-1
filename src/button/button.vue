@@ -58,7 +58,7 @@
         }
 
         .loading{
-            animation: spin 2s infinite linear;
+            @include spin
         }
     }
 

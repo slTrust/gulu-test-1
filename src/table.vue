@@ -3,10 +3,16 @@
         <table class="gulu-table" :class="{borderd,compact,striped}">
             <thead>
                 <tr>
-                    <th><input type="checkbox" @change="onChangeAllItems" ref="allChecked"></th>
+                    <th><input type="checkbox" @change="onChangeAllItems" ref="allChecked" :checked="areAllItemsSelected"></th>
                     <th v-if="numberVisible">#</th>
                     <th v-for="column in columns" :key="column.field">
-                        {{column.text}}
+                        <div class="gulu-table-header">
+                            {{column.text}}
+                            <span v-if="column.field in orderBy" class="gulu-table-sorter" @click="changeOrderBy(column.field,'asc')">
+                                <g-icon name="asc" :class="{active:orderBy[column.field] === 'asc'}"></g-icon>
+                                <g-icon name="desc" :class="{active:orderBy[column.field] === 'desc'}"></g-icon>
+                            </span>
+                        </div>
                     </th>
                 </tr>
             </thead>
@@ -24,13 +30,26 @@
                 </tr>
             </tbody>
         </table>
+        <div  v-if="loading" class="gulu-table-loading">
+            <g-icon name="loading"></g-icon>
+        </div>
     </div>
 </template>
 
 <script>
+    import GIcon from './icon'
     export default {
         name: "GuluTable",
+        components:{GIcon},
         props:{
+            orderBy:{
+                type:Object,
+                default:()=>{return {}},
+            },
+            loading:{
+                type:Boolean,
+                default:false
+            },
             // 斑马纹
             striped:{
                 type:Boolean,
@@ -66,6 +85,25 @@
                 default: false
             }
         },
+        computed:{
+            areAllItemsSelected(){
+                const a = this.dataSource.map(item=>item.id).sort() // js 默认排序 字典序
+                const b = this.selectedItems.map(item=>item.id).sort()
+                let equal = true;
+                if(a.length === b.length){
+                    for(let i=0;i<a.length;i++){
+                        if(a[i] !== b[i]){
+                            equal = false
+                            break
+                        }
+                    }
+                    return equal
+
+                }else{
+                    return false
+                }
+            }
+        },
         watch:{
             // 设置半选
             selectedItems(){
@@ -79,6 +117,18 @@
             }
         },
         methods:{
+            changeOrderBy(key){
+                const copy = JSON.parse(JSON.stringify(this.orderBy))
+                let oldValue = copy[key]
+                if(oldValue === 'asc'){
+                    copy[key] = 'desc'
+                }else if (oldValue === 'desc'){
+                    copy[key] = true
+                }else{
+                    copy[key] = 'asc'
+                }
+                this.$emit('update:orderBy',copy)
+            },
             inSelectedItems(item){
                 return this.selectedItems.filter((i) => i.id===item.id).length>0;
             },
@@ -95,7 +145,8 @@
             onChangeAllItems(e){
                 let selected = e.target.checked;
                 this.$emit('update:selectedItems',selected ? this.dataSource : [])
-            }
+            },
+
         }
     }
 </script>
@@ -136,6 +187,51 @@
             border-bottom:1px solid $grey;
             text-align: left;
             padding:8px;
+        }
+        &-sorter{
+            display: inline-flex;
+            flex-direction: column;
+            margin:0 4px;
+            svg{
+                width: 10px;
+                height: 10px;
+                fill:$grey;
+                cursor: pointer;
+                &.active{
+                    fill:red;
+                }
+                &:first-child{
+                    position: relative;
+                    bottom:-1px;
+                }
+                &:last-child{
+                    position: relative;
+                    top:-1px;
+                }
+            }
+        }
+        &-header{
+            display: flex;
+            align-items: center;
+        }
+        &-wrapper{
+            position:relative;
+        }
+        &-loading{
+            position: absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255,255,255,0.8);
+            svg{
+                width:50px;
+                height: 50px;
+                @include spin
+            }
         }
     }
 </style>
