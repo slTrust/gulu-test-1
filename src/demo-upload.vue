@@ -1,11 +1,15 @@
 <template>
     <div>
+        <!--
+        action="https://upload-server01.herokuapp.com/upload"
+        -->
         <g-uploader
                 accept="image/*"
-                action="https://upload-server01.herokuapp.com/upload"
+                action="http://localhost:3000/upload"
                 name="file"
-                fileList.sync="fileList"
+                :file-list.sync="fileList"
                 method="POST"
+                :parse-response="parseResponse"
         >
             <!-- 默认的slot 可以 不写 成这样
             <template slot="default">
@@ -28,11 +32,16 @@
         components:{GUploader},
         data(){
             return {
-
+                fileList:[]
             }
         },
         methods:{
+            parseResponse(response){
+                let object = JSON.parse(response);
+                let url = `http://127.0.0.1:3000/preview/${object.id}`;
 
+                return url;
+            }
         }
     }
 </script>

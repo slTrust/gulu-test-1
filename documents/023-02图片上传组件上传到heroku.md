@@ -107,3 +107,26 @@ demo.vue
 
 </style>
 ```
+
+#### HTTP协议传输的是什么？
+
+server.js
+
+```
+res.send(JSON.stringify(object)); // 序列化
+```
+
+uploader.vue
+
+```
+xhr.onload = function(){
+    console.log(xhr.response)
+    let object = JSON.parse(xhr.response) // 反序列化
+}
+```
+
+> #### 为什么服务器不直接把对象传递给前端？
+
+- 因为 HTTP 只支持字符串 (http协议是一个字符串协议)
+- 或者二进制如图片
+- 除此之外所有的格式都要你自己去约定 如JSON格式
