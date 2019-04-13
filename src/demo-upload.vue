@@ -1,5 +1,8 @@
 <template>
     <div style="margin:20px;">
+        {{error}}
+        <br>
+        {{fileList}}
         <div>只能上传 300kb 以内的 png、jpeg文件</div>
         <!--
         action="https://upload-server01.herokuapp.com/upload"
@@ -11,6 +14,8 @@
                 :file-list.sync="fileList"
                 method="POST"
                 :parse-response="parseResponse"
+                @error="error=$event"
+                :size-limit="1024*1024"
         >
             <!-- 默认的slot 可以 不写 成这样
             <template slot="default">
@@ -30,10 +35,14 @@
         components:{GUploader,GButton},
         data(){
             return {
-                fileList:[]
+                fileList:[],
+                error:''
             }
         },
         methods:{
+            alert(error){
+                window.alert(error || '上传失败')
+            },
             parseResponse(response){
                 let object = JSON.parse(response);
                 let url = `http://127.0.0.1:3000/preview/${object.id}`;
