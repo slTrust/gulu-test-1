@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div style="margin:20px;">
+        <div>只能上传 300kb 以内的 png、jpeg文件</div>
         <!--
         action="https://upload-server01.herokuapp.com/upload"
         -->
@@ -16,20 +17,17 @@
                 <button>上传</button>
             </template>
              -->
-            <button>上传</button>
-            <template slot="tips">
-                <div>只能上传 300kb 以内的 png、jpeg文件</div>
-            </template>
+            <g-button icon="upload">上传</g-button>
         </g-uploader>
-        <button>保存</button>
     </div>
 </template>
 
 <script>
+    import GButton from './button/button'
     import GUploader from './uploader'
     export default {
         name: "demo-upload.vue",
-        components:{GUploader},
+        components:{GUploader,GButton},
         data(){
             return {
                 fileList:[]
@@ -46,6 +44,6 @@
     }
 </script>
 
-<style scoped>
-
+<style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
 </style>

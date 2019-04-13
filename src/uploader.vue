@@ -3,19 +3,31 @@
         <div @click="onClickUpload" ref="trigger">
             <slot></slot>
         </div>
-        <div ref="temp" style="width:0;height:0;overflow: hidden;"></div>
-        <ol>
+        <ol class="gulu-uploader-fileList">
             <li v-for="file in fileList" :key="file.name">
-                <img :src="file.url" width="100" height="100" alt="">{{file.name}}
-                <button @click="onRemoveFile(file)">x</button>
+                <template v-if="file.status === 'uploading' ">
+                    <g-icon name="loading" class="gulu-uploader-spin"></g-icon>
+                </template>
+                <template v-else-if="file.type.indexOf('image')===0">
+                    <img class="gulu-uploader-image" :src="file.url" width="32" height="32" alt="">
+                </template>
+                <template v-else>
+                    <div class="gulu-uploader-defaultImage"></div>
+                </template>
+                <span class="gulu-uploader-name" :class="{[file.status]:file.status}">{{file.name}}</span>
+                <button class="gulu-uploader-remove" @click="onRemoveFile(file)">x</button>
             </li>
         </ol>
+        <div ref="temp" style="width:0;height:0;overflow: hidden;"></div>
+
     </div>
 </template>
 
 <script>
+    import GIcon from './icon'
     export default {
         name: "GuluUploader",
+        components:{GIcon},
         props:{
             name:{
                 type:String,
@@ -47,8 +59,7 @@
             onClickUpload(){
                 let input = this.createInput();
                 input.addEventListener('change',()=>{
-                    let file = input.files[0];
-                    this.uploadFile(file)
+                    this.uploadFile(input.files[0])
                     input.remove()
                 })
                 input.click()
@@ -63,30 +74,63 @@
                 }
 
             },
-            uploadFile(file){
+            beforeUploadFile(rawFile,newName){
+                let {type,size} = rawFile;
+                this.$emit('update:fileList',[...this.fileList,{name:newName,type,size,status:'uploading'}])
+            },
+            afterUploader(newName,url){
+                let file =  this.fileList.filter( f => f.name === newName )[0]
+                let index = this.fileList.indexOf(file);
+                let fileCopy = JSON.parse(JSON.stringify(file))
+                fileCopy.url = url
+                fileCopy.status = 'success'
+                let fileListCopy = [...this.fileList];
+                fileListCopy.splice(index,1,fileCopy)
+                console.log(fileListCopy)
+                this.$emit('update:fileList',fileListCopy)
+            },
+            uploadFile(rawFile){
+                let {name,size,type} = rawFile;
+                let newName = this.generateName(name);
+                this.beforeUploadFile(rawFile,newName);
                 let formData = new FormData();
-                formData.append(this.name,file);
-                let {name,size,type} = file;
+                formData.append(this.name,rawFile);
                 this.doUploadFile(formData,(response)=>{
                     let url = this.parseResponse(response);
                     this.url = url;
-                    while(this.fileList.filter(f=>f.name === name).length > 0){
-                        let dotIndex = name.lastIndexOf('.');
-                        let nameWithoutExtension = name.substring(0,dotIndex);
-                        let extension = name.substring(dotIndex);
-                        name = nameWithoutExtension + '(1)' + extension;
-                    }
-                    // 合并之前的 fileList
-                    this.$emit('update:fileList',[...this.fileList,{name,type,size,url}])
+                    this.afterUploader(newName,url)
+                },()=>{
+                    this.uploadError(newName);
                 })
             },
-            doUploadFile(formData,success){
+            uploadError(newName){
+                let file = this.fileList.filter( f=> f.name===newName)[0];
+                let index = this.fileList.indexOf(file)
+                let fileCopy = JSON.parse(JSON.stringify(file))
+                fileCopy.status = 'fail';
+                let fileListCopy = [...this.fileList]
+                fileListCopy.splice(index,1,fileCopy)
+                this.$emit('update:fileList',fileListCopy)
+            },
+            generateName(name){
+                while(this.fileList.filter(f=>f.name === name).length > 0){
+                    let dotIndex = name.lastIndexOf('.');
+                    let nameWithoutExtension = name.substring(0,dotIndex);
+                    let extension = name.substring(dotIndex);
+                    name = nameWithoutExtension + '(1)' + extension;
+                }
+                return name;
+            },
+            doUploadFile(formData,success,fail){
+
                 var xhr = new XMLHttpRequest()
                 xhr.open(this.method,this.action)
                 xhr.onload = ()=>{
-                    // let object = JSON.parse(xhr.response) // 反序列化
-                    // let url = `http://localhost:3000/preview/${object.id}` // 耦合  ==》 解耦 ——————解析函数
-                    success(xhr.response)
+                    if(Math.random() > 0.5){
+                        success(xhr.response)
+                    }else{
+                        fail()
+                    }
                 }
                 xhr.send(formData)
             },
@@ -101,6 +145,41 @@
 </script>
 
 <style scoped lang="scss">
-.gulu-uploader{
-}
+    @import "var";
+    .gulu-uploader{
+        &-fileList{
+            list-style: none;
+            > li{
+                display: flex;
+                align-items: center;
+                margin:8px 0;
+                border:1px solid darken($grey,10%);
+            }
+        }
+        &-defaultImage{
+            border:1px solid red;
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+        }
+        &-image{
+            margin-right: 8px;
+            border:none;
+        }
+        &-name{
+            margin-right: auto;
+            &.success{color:green;}
+            &.fail{color:red;}
+            &.success{color:green;}
+        }
+        &-remove{
+            width: 32px;
+            height: 32px;
+        }
+        &-spin{
+            width: 32px;
+            height: 32px;
+            @include spin;
+        }
+    }
 </style>
