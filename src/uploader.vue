@@ -24,6 +24,7 @@
 </template>
 
 <script>
+    import http from './http'
     import GIcon from './icon'
     export default {
         name: "GuluUploader",
@@ -43,13 +44,17 @@
         },
         methods:{
             onClickUpload(){
+                console.log(1)
                 let input = this.createInput();
+
                 input.addEventListener('change',()=>{
+                    console.log(2)
                     // this.uploadFiles(input.files[0]) // 单文件
                     this.uploadFiles(input.files)
                     input.remove()
                 })
                 input.click()
+                console.log(3)
             },
 
             onRemoveFile(file){
@@ -97,6 +102,7 @@
                 this.$emit('update:fileList',fileListCopy)
             },
             uploadFiles(rawFiles){
+                console.log(rawFiles);
                 let newNames = [];
                 for(let i = 0;i<rawFiles.length;i++){
                     let rawFile = rawFiles[i];
@@ -145,19 +151,7 @@
                 return name;
             },
             doUploadFiles(formData,success,fail){
-
-                var xhr = new XMLHttpRequest()
-                xhr.open(this.method,this.action)
-                xhr.onload = ()=>{
-                    console.log('成功')
-                    success(xhr.response)
-
-                }
-                xhr.onerror = ()=>{
-                    console.log('失败')
-                    fail(xhr,xhr.status)
-                }
-                xhr.send(formData)
+                http[this.method.toLowerCase()](this.action,{ success, fail, data:formData });
             },
             createInput(){
                 // 用户点击取消后 input也生成了
