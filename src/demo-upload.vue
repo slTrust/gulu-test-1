@@ -16,6 +16,7 @@
                 :parse-response="parseResponse"
                 @error="error=$event"
                 :size-limit="1024*1024"
+                @addFile="addFile"
         >
             <!-- 默认的slot 可以 不写 成这样
             <template slot="default">
@@ -48,6 +49,9 @@
                 let url = `http://127.0.0.1:3000/preview/${object.id}`;
 
                 return url;
+            },
+            addFile(file){
+                this.fileList.push(file)
             }
         }
     }

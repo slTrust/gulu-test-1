@@ -45,11 +45,13 @@
             onClickUpload(){
                 let input = this.createInput();
                 input.addEventListener('change',()=>{
-                    this.uploadFile(input.files[0])
+                    // this.uploadFiles(input.files[0]) // 单文件
+                    this.uploadFiles(input.files)
                     input.remove()
                 })
                 input.click()
             },
+
             onRemoveFile(file){
                 let answer = window.confirm('你确定要删除这玩意吗')
                 if (answer){
@@ -60,40 +62,64 @@
                 }
 
             },
-            beforeUploadFile(rawFile,newName){
-                let {type,size} = rawFile;
-                if(size> this.sizeLimit){
-                    this.$emit('error','文件大于2MB')
-                    return false;
-                }else{
-                    this.$emit('update:fileList',[...this.fileList,{name:newName,type,size,status:'uploading'}])
-                    return true;
+            beforeUploadFiles(rawFiles,newNames){
+                rawFiles = Array.from(rawFiles)
+                for(let i=0;i<rawFiles.length;i++){
+                    let {type,size} = rawFiles[i];
+                    if(size> this.sizeLimit){
+                        this.$emit('error','文件大于2MB')
+                        return false;
+                    }
                 }
+                let x = rawFiles.map((rawFile,i)=>{
+                    let {type,size} = rawFile
+                    return {name:newNames[i],type,size,status:'uploading'}
+                })
+
+                this.$emit('update:fileList',[...this.fileList,...x])
+                // this.$emit('addFile',{name:newName,type,size,status:'uploading'})
+                return true;
             },
             afterUploader(newName,url){
                 let file =  this.fileList.filter( f => f.name === newName )[0]
                 let index = this.fileList.indexOf(file);
+                console.log('file')
+                console.log(file)
                 let fileCopy = JSON.parse(JSON.stringify(file))
                 fileCopy.url = url
                 fileCopy.status = 'success'
                 let fileListCopy = [...this.fileList];
+                console.log('fileCopy')
+                console.log(fileCopy)
+
                 fileListCopy.splice(index,1,fileCopy)
                 console.log(fileListCopy)
                 this.$emit('update:fileList',fileListCopy)
             },
-            uploadFile(rawFile){
-                let {name,size,type} = rawFile;
-                let newName = this.generateName(name);
-                if(!this.beforeUploadFile(rawFile,newName)) return;
-                let formData = new FormData();
-                formData.append(this.name,rawFile);
-                this.doUploadFile(formData,(response)=>{
-                    let url = this.parseResponse(response);
-                    this.url = url;
-                    this.afterUploader(newName,url)
-                },(xhr)=>{
-                    this.uploadError(xhr,newName);
-                })
+            uploadFiles(rawFiles){
+                let newNames = [];
+                for(let i = 0;i<rawFiles.length;i++){
+                    let rawFile = rawFiles[i];
+                    let {name,size,type} = rawFile;
+                    let newName = this.generateName(name);
+                    newNames[i] = newName
+
+                }
+                if(!this.beforeUploadFiles(rawFiles,newNames)) return;
+
+                for(let i = 0;i<rawFiles.length;i++){
+                    let rawFile = rawFiles[i];
+                    let newName = newNames[i];
+                    let formData = new FormData();
+                    formData.append(this.name,rawFile);
+                    this.doUploadFiles(formData,(response)=>{
+                        let url = this.parseResponse(response);
+                        this.url = url;
+                        this.afterUploader(newName,url)
+                    },(xhr)=>{
+                        this.uploadError(xhr,newName);
+                    })
+                }
             },
             uploadError(xhr,newName){
                 let file = this.fileList.filter( f=> f.name===newName)[0];
@@ -118,14 +144,17 @@
                 }
                 return name;
             },
-            doUploadFile(formData,success,fail){
+            doUploadFiles(formData,success,fail){
 
                 var xhr = new XMLHttpRequest()
                 xhr.open(this.method,this.action)
                 xhr.onload = ()=>{
+                    console.log('成功')
                     success(xhr.response)
+
                 }
                 xhr.onerror = ()=>{
+                    console.log('失败')
                     fail(xhr,xhr.status)
                 }
                 xhr.send(formData)
@@ -136,6 +165,8 @@
                 this.$refs.temp.innerHTML = '';
                 let input = document.createElement('input');
                 input.type = 'file';
+                input.accept = 'image/*'
+                input.multiple = true;
                 this.$refs.temp.appendChild(input);
                 return input
             }
