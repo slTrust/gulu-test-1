@@ -44,17 +44,14 @@
         },
         methods:{
             onClickUpload(){
-                console.log(1)
                 let input = this.createInput();
 
                 input.addEventListener('change',()=>{
-                    console.log(2)
                     // this.uploadFiles(input.files[0]) // 单文件
                     this.uploadFiles(input.files)
                     input.remove()
                 })
                 input.click()
-                console.log(3)
             },
 
             onRemoveFile(file){
@@ -88,21 +85,16 @@
             afterUploader(newName,url){
                 let file =  this.fileList.filter( f => f.name === newName )[0]
                 let index = this.fileList.indexOf(file);
-                console.log('file')
-                console.log(file)
                 let fileCopy = JSON.parse(JSON.stringify(file))
                 fileCopy.url = url
                 fileCopy.status = 'success'
                 let fileListCopy = [...this.fileList];
-                console.log('fileCopy')
-                console.log(fileCopy)
 
                 fileListCopy.splice(index,1,fileCopy)
-                console.log(fileListCopy)
                 this.$emit('update:fileList',fileListCopy)
+                this.$emit('updated') // 添加一个上传结束的事件
             },
             uploadFiles(rawFiles){
-                console.log(rawFiles);
                 let newNames = [];
                 for(let i = 0;i<rawFiles.length;i++){
                     let rawFile = rawFiles[i];
