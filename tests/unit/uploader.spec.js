@@ -49,8 +49,12 @@ describe('Uploader.vue', () => {
         data.items.add(file1)
         data.items.add(file2);
         input.files = data.files;
-        console.log('hi');
-
+        // 解决 input.files 设置后 死活不触发 change事件
+        // google 搜索 input file trigger change
+        // 答案参考 https://gist.github.com/Lochlan/ccbe22e7c5e80b6d7966
+        var event = document.createEvent("UIEvents");
+        event.initUIEvent("change", true, true);
+        input.dispatchEvent(event);
 
     });
 
