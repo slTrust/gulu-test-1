@@ -1,8 +1,7 @@
 <template>
     <div style="margin:20px;">
-        <d-jsx></d-jsx>
         {{selected}}
-        <g-table :columns="columns"
+        <g-table
                  :data-source="dataSource"
                  :order-by.sync="orderBy"
                  borderd
@@ -20,27 +19,37 @@
                 <button @click="edit(xxx.item)">编辑</button>
                 <button @click="view(xxx.item)">查看</button>
             </template>
+            <g-table-column text="姓名" field="name" :width=100>
+                <template slot-scope="props">
+                    <a href="">{{props.value}}</a>
+                </template>
+            </g-table-column>
+            <g-table-column text="分数" field="score">
+                <template slot-scope="props">
+                    <strong>{{props.value}}</strong>%
+                </template>
+            </g-table-column>
         </g-table>
-        <g-table :columns="columns" :data-source="dataSource" borderd></g-table>
-        <!--<g-table :columns="columns" :data-source="dataSource" :striped="false"></g-table>-->
+
     </div>
 </template>
 
 <script>
     import DJsx from './demo-jsx'
     import GTable from './table-pro';
+    import GTableColumn from './table-column'
 
     export default {
         components:{
-            GTable,DJsx
+            GTable,DJsx,GTableColumn
         },
         data(){
             return {
                 loading:false,
                 selected:[],
                 columns:[
-                    {text:'姓名',field:'name',sort:'asc',width:100},
-                    {text:'分数',field:'score',sort:'desc'},
+                    // {text:'姓名',field:'name',sort:'asc',width:100},
+                    // {text:'分数',field:'score',sort:'desc'},
                 ],
                 orderBy:{ // true 开启排序， 但是不确定 asc desc
                     name:true,
@@ -83,7 +92,7 @@
                 setTimeout(()=>{
                     this.dataSource = this.dataSource.sort((a,b)=> a.score - b.score)
                     this.loading = false;
-                },1000)
+                },500)
                 // 我们模拟一下
             },
             edit(item){

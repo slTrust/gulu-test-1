@@ -41,7 +41,12 @@
                             <td :style="{width:'50px'}" v-if="numberVisible" class="gulu-table-center">{{index}}</td>
                             <template v-for="column in columns" >
                                 <td :style="{width:column.width+'px'}" :key="column.field">
-                                    {{column.render?column.render(item[column.field]):item[column.field]}}
+                                    <template v-if="column.render">
+                                        <vnodes :vnodes="column.render({value: item[column.field]})"></vnodes>
+                                    </template>
+                                    <template v-else>
+                                        {{item[column.field]}}
+                                    </template>
                                 </td>
                             </template>
                             <td v-if="$scopedSlots.default">
@@ -71,10 +76,17 @@
     import GIcon from './icon'
     export default {
         name: "GuluTablePro",
-        components:{GIcon},
+        components:{
+            GIcon,
+            Vnodes: {
+                functional: true,
+                render: (h, ctx) => ctx.props.vnodes
+            }
+        },
         data(){
             return{
-                expendedIds:[] // 记录可展开列的id
+                expendedIds:[], // 记录可展开列的id
+                columns: []
             }
         },
         props:{
@@ -106,10 +118,10 @@
                 type:Boolean,
                 default:false
             },
-            columns:{
-                type:Array,
-                required:true
-            },
+            // columns:{
+            //     type:Array,
+            //     required:true
+            // },
             dataSource:{
                 type:Array,
                 required:true,
@@ -170,6 +182,13 @@
             }
         },
         mounted(){
+            this.columns = this.$slots.default.map(node => {
+                // 遍历每个slot 找到它传递的 props数据
+                let {text, field, width} = node.componentOptions.propsData
+                let render = node.data.scopedSlots && node.data.scopedSlots.default
+                return {text, field, width, render}
+            });
+
             // 只复制 table 不复制table里的元素
             let table2 = this.$refs.table.cloneNode(false);
             this.table2 = table2
