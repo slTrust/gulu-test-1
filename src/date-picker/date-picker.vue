@@ -20,15 +20,16 @@
                         <div v-else-if="mode===`months`" class="gulu-date-picker-content">月视图</div>
                         <div v-else="mode===`days`" class="gulu-date-picker-content">
                             <!-- weekDay -->
-                            <div>
-                                <span v-for="i in [1,2,3,4,5,6,0]" :key="i">{{i}}</span>
+                            <div :class="c('weekdays')">
+                                <span :class="c('weekday')" v-for="i in [1,2,3,4,5,6,0]" :key="i">{{weekdays[i]}}</span>
                             </div>
-                            <div v-for="i in helper.range(1, 7)" :key="i">
+                            <div :class="c('row')" v-for="i in helper.range(1, 7)" :key="i">
                                 <span
+                                        :class="c('cell')"
                                         v-for="j in helper.range(1,8)"
                                         :key="j"
                                 >
-                                    {{visibleDays[((i - 1) * 7)+ (j-1)]}}
+                                    {{visibleDays[((i - 1) * 7)+ (j-1)].getDate()}}
                                 </span>
                             </div>
                         </div>
@@ -59,6 +60,7 @@
             return {
                 mode:'days', // days months years
                 helper: helper, // FIXME helper 放这里不好
+                weekdays: ["日", "一", "二", "三", "四", "五", "六"],
                 value:new Date()
             }
         },
@@ -67,6 +69,9 @@
             console.log(this.visibleDays);
         },
         methods:{
+            c(...classNames) {
+                return classNames.map(className => `gulu-date-picker-${className}`);
+            },
             onClickYear(){
                 this.mode = 'years';
             },
