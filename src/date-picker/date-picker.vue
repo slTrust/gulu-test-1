@@ -1,3 +1,4 @@
+<script src="../../../../Downloads/font_720640_9xxykkxx0rc/iconfont.js"></script>
 <template>
     <div style="border:1px solid red;">
         <g-popover position="bottom">
@@ -8,12 +9,12 @@
             <template slot="content">
                 <div class="gulu-date-picker-pop">
                     <div class="gulu-date-picker-nav">
-                        <span><g-icon name="left"></g-icon></span>
+                        <span><g-icon name="left-left"></g-icon></span>
                         <span><g-icon name="left"></g-icon></span>
                         <span @click="onClickYear">2018年</span>
                         <span @click="onClickMonth">12月</span>
                         <span><g-icon name="right"></g-icon></span>
-                        <span><g-icon name="right"></g-icon></span>
+                        <span><g-icon name="right-right"></g-icon></span>
                     </div>
                     <div class="gulu-date-picker-panels">
                         <div v-if="mode===`years`"class="gulu-date-picker-content">年视图</div>
