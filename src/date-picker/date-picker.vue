@@ -2,7 +2,7 @@
     <div class="gulu-date-picker" style="border:1px solid red;" ref="wrapper">
         <g-popover position="bottom" :container="popoverContainer">
             <template>
-                <g-input></g-input>
+                <g-input :value="formattedValue"  ref="input"></g-input>
             </template>
             <template slot="content">
                 <div class="gulu-date-picker-pop">
@@ -37,8 +37,9 @@
                                         :class="c('cell')"
                                         v-for="j in helper.range(1,8)"
                                         :key="j"
+                                        @click="onClickCell(getVisibleDay(i,j))"
                                 >
-                                    {{visibleDays[((i - 1) * 7)+ (j-1)].getDate()}}
+                                    {{getVisibleDay(i,j).getDate()}}
                                 </span>
                             </div>
                         </div>
@@ -64,6 +65,15 @@
         components:{
             GInput, GIcon, GPopover
         },
+        props:{
+            firstDayOfWeek: {
+                type: Number,
+                default: 1
+            },
+            value: {
+                type: Date
+            },
+        },
         directives: { ClickOutside },
         data(){
             return {
@@ -71,7 +81,6 @@
                 helper: helper, // FIXME helper 放这里不好
                 popoverContainer: null,
                 weekdays: ["日", "一", "二", "三", "四", "五", "六"],
-                value:new Date()
             }
         },
         mounted(){
@@ -86,7 +95,13 @@
             },
             onClickMonth(){
                 this.mode = 'months'
-            }
+            },
+            onClickCell(date) {
+                this.$emit("input", date);
+            },
+            getVisibleDay(row, col) {
+                return this.visibleDays[(row - 1) * 7 + col - 1];
+            },
         },
         computed:{
             visibleDays() {
@@ -105,6 +120,13 @@
                 // let array_s = array.map(item=>`${item.getFullYear()}-${item.getMonth()+1}-${item.getDate()}`)
                 // console.log(array_s)
                 return array;
+            },
+            formattedValue() {
+                if (!this.value) {
+                    return "";
+                }
+                const [year, month, day] = helper.getYearMonthDate(this.value);
+                return `${year}-${helper.pad2(month + 1)}-${helper.pad2(day)}`;
             },
         }
     }
@@ -133,7 +155,6 @@
     &-yearAndMonth {
         margin: auto;
     }
-
 
     /deep/ .gulu-popover-content-wrapper {
         padding: 0;
