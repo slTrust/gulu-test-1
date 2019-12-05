@@ -1,7 +1,7 @@
 <template>
     <div class="popover" ref="popover">
-        <div ref="contentWrapper" class="content-wrapper" v-if="visable"
-            :class="{[`position-${position}`]:true}"
+        <div ref="contentWrapper" class="gulu-popover-content-wrapper" v-if="visable"
+            :class="[{[`position-${position}`]:true},popClassName]"
         >
             <slot name="content" :close="close"></slot>
         </div>
@@ -20,6 +20,9 @@
             }
         },
         props:{
+            popClassName: {
+                type: String
+            },
             position:{
                 type:String,
                 default:'top',
@@ -33,6 +36,9 @@
                 validator(value){
                     return ['click','hover'].indexOf(value) >= 0
                 }
+            },
+            container: {
+                type: Element
             }
         },
         computed:{
@@ -71,7 +77,7 @@
         methods:{
             positionContent(){
                 const {contentWrapper,triggerWrapper} = this.$refs;
-                document.body.appendChild(this.$refs.contentWrapper);
+                (this.container || document.body).appendChild(contentWrapper)
                 // 获取 span的 位置信息
                 let {height, width, left, top} = triggerWrapper.getBoundingClientRect();
                 let {height:height2} = contentWrapper.getBoundingClientRect();
@@ -146,7 +152,7 @@
         vertical-align: top;
         position: relative;
     }
-    .content-wrapper{
+    .gulu-popover-content-wrapper{
         position: absolute;
         border:1px solid $border-color;
         border-radius: $border-radius;

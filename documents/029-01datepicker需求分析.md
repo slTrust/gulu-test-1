@@ -92,3 +92,22 @@ let lastDate = date.setDate(0)
     }
     ```
 
+> #### 跨越组件加样式
+
+我们的 popover组件有padding但是 date-picker里 我们不想要这个padding
+
+- `/deep/ 选择器{ ... }` 跨越组件加样式
+
+```
+/deep/ .gulu-popover-content-wrapper {
+    padding: 0;
+}
+```
+
+
+#### 踩了两个坑
+
+- 在 vue标签上是无法直接把 ref 传递过去的
+    - 我们通过定义 data 里的 popoverContainer
+    - 在 mounted的时候 进行赋值`this.popoverContainer = this.$refs.wrapper;`
+- 由于我们用了 scoped 的样式添加样式非常麻烦，我们用到了 `/deep/` 来跨越组件添加样式

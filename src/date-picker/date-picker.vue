@@ -1,10 +1,8 @@
-<script src="../../../../Downloads/font_720640_9xxykkxx0rc/iconfont.js"></script>
 <template>
-    <div style="border:1px solid red;">
-        <g-popover position="bottom">
+    <div class="gulu-date-picker" style="border:1px solid red;" ref="wrapper">
+        <g-popover position="bottom" :container="popoverContainer">
             <template>
                 <g-input></g-input>
-                {{mode}}
             </template>
             <template slot="content">
                 <div class="gulu-date-picker-pop">
@@ -17,7 +15,7 @@
                         <span><g-icon name="right-right"></g-icon></span>
                     </div>
                     <div class="gulu-date-picker-panels">
-                        <div v-if="mode===`years`"class="gulu-date-picker-content">年视图</div>
+                        <div v-if="mode===`years` "class="gulu-date-picker-content">年视图</div>
                         <div v-else-if="mode===`months`" class="gulu-date-picker-content">月视图</div>
                         <div v-else="mode===`days`" class="gulu-date-picker-content">
                             <!-- weekDay -->
@@ -61,13 +59,13 @@
             return {
                 mode:'days', // days months years
                 helper: helper, // FIXME helper 放这里不好
+                popoverContainer: null,
                 weekdays: ["日", "一", "二", "三", "四", "五", "六"],
                 value:new Date()
             }
         },
         mounted(){
-
-            console.log(this.visibleDays);
+            this.popoverContainer = this.$refs.wrapper;
         },
         methods:{
             c(...classNames) {
@@ -94,15 +92,26 @@
                 for (let i = 0; i < 42; i++) {
                     array.push(new Date(startDay + i * 3600 * 24 * 1000));
                 }
-                let array_s = array.map(item=>`${item.getFullYear()}-${item.getMonth()+1}-${item.getDate()}`)
-                console.log(array_s)
+                // let array_s = array.map(item=>`${item.getFullYear()}-${item.getMonth()+1}-${item.getDate()}`)
+                // console.log(array_s)
                 return array;
             },
         }
-
     }
 </script>
 
 <style scoped lang="scss">
+@import "var";
+.gulu-date-picker{
+    &-nav {
+        background: red;
+    }
+    &-popWrapper {
+        padding: 0;
+    }
 
+    /deep/ .gulu-popover-content-wrapper {
+        padding: 0;
+    }
+}
 </style>
