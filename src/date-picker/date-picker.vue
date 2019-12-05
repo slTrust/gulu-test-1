@@ -1,8 +1,8 @@
 <template>
     <div class="gulu-date-picker" style="border:1px solid red;" ref="wrapper">
-        <g-popover position="bottom" :container="popoverContainer">
+        <g-popover ref="popover" position="bottom" :container="popoverContainer" @open="onOpen">
             <template>
-                <g-input :value="formattedValue"  ref="input"></g-input>
+                <g-input type="text" :value="formattedValue" @input="onInput" @change="onChange" ref="input"/>
             </template>
             <template slot="content">
                 <div class="gulu-date-picker-pop" @selectstart.prevent>
@@ -41,11 +41,11 @@
                                         </select>月
                                     </div>
                                     <div :class="c('returnToDayMode')">
-                                        <button @click="mode='day'">返回</button>
+                                        <button @click.stop="mode=`day`">返回</button>
                                     </div>
                                 </div>
                             </template>
-                            <template v-else="mode===`day`">
+                            <template v-else>
                                 <!-- weekDay -->
                                 <div :class="c('weekdays')">
                                     <span :class="c('weekday')" v-for="i in [1,2,3,4,5,6,0]" :key="i">{{weekdays[i]}}</span>
@@ -54,6 +54,8 @@
                                 <span
                                         :class="[c('cell'),{
                                                 currentMonth: isCurrentMonth(getVisibleDay(i,j)),
+                                                selected: isSelected(getVisibleDay(i,j)),
+                                                today: isToday(getVisibleDay(i,j))
                                                 }]"
                                         v-for="j in helper.range(1,8)"
                                         :key="j"
@@ -66,7 +68,10 @@
                         </div>
                     </div>
 
-                    <div class="gulu-date-picker-actions"></div>
+                    <div class="gulu-date-picker-actions">
+                        <g-button @click="onClickToday">今天</g-button>
+                        <g-button @click="onClickClear">清除</g-button>
+                    </div>
                 </div>
             </template>
         </g-popover>
@@ -80,11 +85,12 @@
     import ClickOutside from "../click-outside";
     import GPopover from "../popover";
     import helper from "./helper";
+    import GButton from "../button/button";
 
     export default {
         name: "GuluDatePicker",
         components:{
-            GInput, GIcon, GPopover
+            GInput, GIcon, GPopover ,GButton
         },
         props:{
             firstDayOfWeek: {
@@ -118,6 +124,19 @@
             c(...classNames) {
                 return classNames.map(className => `gulu-date-picker-${className}`);
             },
+            onInput(value) {
+                var regex = /^\d{4}-\d{2}-\d{2}$/g;
+                if (value.match(regex)) {
+                    let [year, month, day] = value.split("-");
+                    month = month - 1;
+                    year = year - 0;
+                    this.display = { year, month };
+                    this.$emit("input", new Date(year, month, day));
+                }
+            },
+            onChange() {
+                this.$refs.input.setRawValue(this.formattedValue);
+            },
             onClickMonth() {
                 if (this.mode !== "month") {
                     this.mode = "month";
@@ -128,6 +147,7 @@
             onClickCell(date) {
                 if (this.isCurrentMonth(date)) {
                     this.$emit("input", date);
+                    this.$refs.popover.close();
                 }
             },
             getVisibleDay(row, col) {
@@ -305,6 +325,10 @@
     /deep/ .gulu-popover-content-wrapper {
         padding: 0;
         z-index: 999;
+    }
+    &-actions {
+        padding: 8px;
+        text-align: right;
     }
 }
 </style>

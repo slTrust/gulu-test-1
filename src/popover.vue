@@ -59,12 +59,7 @@
 
         },
         mounted(){
-            if(this.trigger === 'click'){
-                this.$refs.popover.addEventListener('click',this.onClick)
-            }else{
-                this.$refs.popover.addEventListener('mouseenter',this.open)
-                this.$refs.popover.addEventListener('mouseleave',this.close)
-            }
+            this.addPopoverListeners()
         },
         beforeDestroy(){
             if(this.trigger === 'click'){
@@ -75,6 +70,14 @@
             }
         },
         methods:{
+            addPopoverListeners(){
+                if(this.trigger === 'click'){
+                    this.$refs.popover.addEventListener('click',this.onClick)
+                }else{
+                    this.$refs.popover.addEventListener('mouseenter',this.open)
+                    this.$refs.popover.addEventListener('mouseleave',this.close)
+                }
+            },
             positionContent(){
                 const {contentWrapper,triggerWrapper} = this.$refs;
                 (this.container || document.body).appendChild(contentWrapper)
@@ -105,7 +108,6 @@
 
             },
             onClickDocument(e){
-                console.log('onCLick document')
                 // 再次做判断 判断是点击的内容还是 点击的其他地方
                 // 点击的 是 popover 里的内容区域就不管它
                 if(this.$refs.popover &&
