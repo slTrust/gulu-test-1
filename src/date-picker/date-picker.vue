@@ -7,12 +7,22 @@
             <template slot="content">
                 <div class="gulu-date-picker-pop">
                     <div class="gulu-date-picker-nav">
-                        <span><g-icon name="left-left"></g-icon></span>
-                        <span><g-icon name="left"></g-icon></span>
-                        <span @click="onClickYear">2018年</span>
-                        <span @click="onClickMonth">12月</span>
-                        <span><g-icon name="right"></g-icon></span>
-                        <span><g-icon name="right-right"></g-icon></span>
+                        <span :class="c('prevYear', 'navItem')">
+                            <g-icon name="left-left"></g-icon>
+                        </span>
+                        <span :class="c('prevMonth', 'navItem')">
+                            <g-icon name="left"></g-icon>
+                        </span>
+                        <span :class="c('yearAndMonth')" @click="onClickMonth">
+                            <span @click="onClickYear">2018年</span>
+                            <span @click="onClickMonth">12月</span>
+                        </span>
+                        <span :class="c('nextMonth', 'navItem')">
+                            <g-icon name="right"></g-icon>
+                        </span>
+                        <span :class="c('nextYear', 'navItem')">
+                            <g-icon name="right-right"></g-icon>
+                        </span>
                     </div>
                     <div class="gulu-date-picker-panels">
                         <div v-if="mode===`years` "class="gulu-date-picker-content">年视图</div>
@@ -104,11 +114,26 @@
 @import "var";
 .gulu-date-picker{
     &-nav {
-        background: red;
     }
     &-popWrapper {
         padding: 0;
     }
+    &-navItem,
+    &-cell,
+    &-weekday {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &-nav {
+        display: flex;
+    }
+    &-yearAndMonth {
+        margin: auto;
+    }
+
 
     /deep/ .gulu-popover-content-wrapper {
         padding: 0;
