@@ -6,7 +6,8 @@ import Vue from 'vue'
 // import App from './demo-sticky.vue'
 // 升级版 table
 // import App from './demo-table-pro.vue'
-import App from './demo-date-picker'
+// import App from './demo-date-picker'
+import App from './demo-scroll'
 
 
 Vue.config.productionTip = false
