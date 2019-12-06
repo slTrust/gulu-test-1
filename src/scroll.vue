@@ -3,6 +3,11 @@
         <div ref="child" class="gulu-scroll">
             <slot></slot>
         </div>
+        <div class="gulu-scroll-track">
+            <div class="gulu-scroll-bar" ref="bar">
+                <div class="gulu-scroll-bar-inner"></div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -37,11 +42,38 @@
                 }else if(translateY < -maxHeight){
                     translateY = -maxHeight
                 }else{
-                    // 只有不在边界的时候 组织
+                    // 只有不在边界的时候 阻止
                     e.preventDefault();
                 }
                 child.style.transform = `translateY(${translateY}px)`;
+                this.updateScrollBar(parentHeight,childHeight,translateY);
+                this.autoHideScrollBar();
             })
+        },
+        methods:{
+            updateScrollBar (p,c,t) {
+                let parentHeight = p
+                let childHeight = c
+                /*
+                等比数列
+                    barHeight / parentHeight =  parentHeight / childHeight
+                */
+                this.barHeight = parentHeight * parentHeight / childHeight
+                this.$refs.bar.style.height = this.barHeight + 'px'
+
+                // 滚动距离
+                /*
+                    滚动条上滚动的距离 / parentHeight = 实际滚动的距离 / childHeight
+                */
+                let y = parentHeight * Math.abs(t) / childHeight
+                console.log(y)
+                this.$refs.bar.style.transform = `translateY(${y}px)`;
+                // this.scrollBarY = -parentHeight * this.contentY / childHeight
+                // this.$refs.bar.style.transform = `translateY(${this.scrollBarY}px)`;
+            },
+            autoHideScrollBar(){
+
+            }
         }
     }
 </script>
@@ -52,6 +84,31 @@
     &-wrapper {
       overflow: hidden;
       position: relative;
+    }
+    &-track{
+        position: absolute;
+        width:14px;
+        top:0;
+        right:0;
+        height:100%;
+        background: #FAFAFA; 
+        border-left: 1px solid #E8E7E8; 
+        opacity: 0.9;
+    }
+    &-bar{
+        position: absolute;
+        top:-1px;
+        left: 50%;
+        height: 40px;
+        width: 8px;
+        margin-left:-4px;
+        padding: 4px 0;
+        &-inner {
+            height: 100%; border-radius: 4px; background: #C2C2C2;
+            &:hover {
+                background: #7D7D7D;
+            }
+        }
     }
 }
 </style>

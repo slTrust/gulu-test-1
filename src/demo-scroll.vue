@@ -133,7 +133,7 @@
     .parent{
         height: 400px;
         width:480px;
-        border:5px solid red;
+        border:1px solid #ccc;
         padding:10px;
     }
 
