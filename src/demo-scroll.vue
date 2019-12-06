@@ -3,7 +3,7 @@
         
         <g-scroll class="parent">
             <div class="child">
-                <p>1</p>
+                <p>1fdafjkdsaflkdajkfljalkjflaksjfldasjfldajslf</p>
                 <p>2</p>
                 <p>3</p>
                 <p>4</p>
@@ -142,6 +142,7 @@
         p{
             padding:10px;
             border:2px solid blue;
+            font-size: 30px;
         }
     }
 </style>

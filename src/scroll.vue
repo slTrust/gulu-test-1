@@ -1,9 +1,9 @@
 <template>
-    <div class="gulu-scroll-wrapper" ref="parent">
+    <div class="gulu-scroll-wrapper" ref="parent" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
         <div ref="child" class="gulu-scroll">
             <slot></slot>
         </div>
-        <div class="gulu-scroll-track">
+        <div class="gulu-scroll-track" v-show="scrollBarVisible">
             <div class="gulu-scroll-bar" ref="bar">
                 <div class="gulu-scroll-bar-inner"></div>
             </div>
@@ -14,6 +14,12 @@
 <script>
     export default {
         name:'GuluScroll',
+        data(){
+            return {
+                scrollBarVisible: false,
+                isScrolling: false,
+            }
+        },
         mounted(){
             let parent = this.$refs.parent;
             let child = this.$refs.child;
@@ -47,7 +53,6 @@
                 }
                 child.style.transform = `translateY(${translateY}px)`;
                 this.updateScrollBar(parentHeight,childHeight,translateY);
-                this.autoHideScrollBar();
             })
         },
         methods:{
@@ -66,14 +71,14 @@
                     滚动条上滚动的距离 / parentHeight = 实际滚动的距离 / childHeight
                 */
                 let y = parentHeight * Math.abs(t) / childHeight
-                console.log(y)
                 this.$refs.bar.style.transform = `translateY(${y}px)`;
-                // this.scrollBarY = -parentHeight * this.contentY / childHeight
-                // this.$refs.bar.style.transform = `translateY(${this.scrollBarY}px)`;
             },
-            autoHideScrollBar(){
-
-            }
+            onMouseEnter () {
+                this.scrollBarVisible = true
+            },
+            onMouseLeave () {
+                this.scrollBarVisible = false;
+            },
         }
     }
 </script>
