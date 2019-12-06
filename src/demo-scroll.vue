@@ -1,6 +1,5 @@
 <template>
-    <div style="margin:20px;">
-        
+    <div style="margin:20px;position:relative;">
         <g-scroll class="parent">
             <div class="child">
                 <p>1fdafjkdsaflkdajkfljalkjflaksjfldasjfldajslf</p>
@@ -110,7 +109,6 @@
 
 <script>
     import GScroll from './scroll';
-
     export default {
         components:{
             GScroll
@@ -121,6 +119,7 @@
             }
         },
         mounted(){
+            
         },
         methods:{
             
