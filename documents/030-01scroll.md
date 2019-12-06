@@ -183,3 +183,107 @@ parent.addEventListener('wheel',(e)=>{
     }
 </style>
 ```
+
+#### 使滚动更加平滑
+
+- 试图让滚动变得流畅，但是还是不那么自然
+
+```
+let parent = this.$refs.parent;
+let child = this.$refs.child;
+
+let translateY = 0;
+child.style.transition = `transform 0.1s ease-in-out`;
+
+// 注意这里 mac 和 win 是反的，我这里只考虑mac了
+let animating = false;
+parent.addEventListener('wheel',(e)=>{
+    // 上滚
+    if(e.deltaY > 0){
+        console.log('上')
+        translateY -= e.deltaY
+        child.style.transform = `translateY(${translateY}px)`;
+        animating = true;
+    }else if(e.deltaY === 0 ){
+        console.log('没动')
+        
+    }else{
+    // 下滚
+        console.log('下')
+        translateY -= e.deltaY
+        child.style.transform = `translateY(${translateY}px)`;
+        animating = true;
+    }
+})
+
+child.addEventListener('transitionend',()=>{
+    animating = false;
+})
+```
+
+再次优化
+
+```
+mounted(){
+    let parent = this.$refs.parent;
+    let child = this.$refs.child;
+    
+    let translateY = 0;
+    child.style.transition = `transform 0.1s ease`;
+    
+    // 注意这里 mac 和 win 是反的，我这里只考虑mac了
+    parent.addEventListener('wheel',(e)=>{
+        // 限速
+        if(e.deltaY > 20){
+            translateY -= 20 * 3    
+        }else if(e.deltaY < -20){
+            translateY -= -20 * 3    
+        }else{
+            translateY -= e.deltaY * 3
+        }
+        child.style.transform = `translateY(${translateY}px)`;
+    })
+},
+```
+
+#### 边界限制
+
+- 顶部和底部
+- getBoundingClientRect 获取高度
+- getComputedStyle(element) 获取样式
+
+```
+mounted(){
+    let parent = this.$refs.parent;
+    let child = this.$refs.child;
+    
+    let translateY = 0;
+    child.style.transition = `transform 0.1s ease`;
+    let {height:childHeight} = child.getBoundingClientRect();
+    let {height:parentHeight} = parent.getBoundingClientRect();
+    let {borderTopWidth,borderBottomWidth,paddingTop,paddingBottom} = window.getComputedStyle(parent)
+    borderTopWidth = parseInt(borderTopWidth);
+    borderBottomWidth = parseInt(borderBottomWidth);
+    paddingTop = parseInt(paddingTop);
+    paddingBottom = parseInt(paddingBottom);
+    let maxHeight = childHeight - parentHeight + (borderTopWidth + borderBottomWidth + paddingTop + paddingBottom);
+    // 注意这里 mac 和 win 是反的，我这里只考虑mac了
+    parent.addEventListener('wheel',(e)=>{
+        // 限速
+        if(e.deltaY > 20){
+            translateY -= 20 * 3    
+        }else if(e.deltaY < -20){
+            translateY -= -20 * 3    
+        }else{
+            translateY -= e.deltaY * 3
+        }
+        if(translateY > 0){
+            translateY = 0;
+        }else if(translateY < -maxHeight){
+            translateY = -maxHeight
+        }
+        child.style.transform = `translateY(${translateY}px)`;
+
+    })
+},
+```

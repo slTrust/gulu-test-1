@@ -125,26 +125,33 @@
             let child = this.$refs.child;
             
             let translateY = 0;
-            child.style.transition = `transform 1s`;
-            
+            child.style.transition = `transform 0.1s ease`;
+            let {height:childHeight} = child.getBoundingClientRect();
+            let {height:parentHeight} = parent.getBoundingClientRect();
+            let {borderTopWidth,borderBottomWidth,paddingTop,paddingBottom} = window.getComputedStyle(parent)
+            borderTopWidth = parseInt(borderTopWidth);
+            borderBottomWidth = parseInt(borderBottomWidth);
+            paddingTop = parseInt(paddingTop);
+            paddingBottom = parseInt(paddingBottom);
+            let maxHeight = childHeight - parentHeight + (borderTopWidth + borderBottomWidth + paddingTop + paddingBottom);
             // 注意这里 mac 和 win 是反的，我这里只考虑mac了
             parent.addEventListener('wheel',(e)=>{
-                // 上滚
-                if(e.deltaY > 0){
-                    console.log('上')
-                    translateY -= 10
-                    child.style.transform = `translateY(${translateY}px)`;
-                }else if(e.deltaY === 0 ){
-                    console.log('没动')
-                    
+                // 限速
+                if(e.deltaY > 20){
+                    translateY -= 20 * 3    
+                }else if(e.deltaY < -20){
+                    translateY -= -20 * 3    
                 }else{
-                // 下滚
-                    console.log('下')
-                    translateY += 10
-                    child.style.transform = `translateY(${translateY}px)`;
+                    translateY -= e.deltaY * 3
                 }
+                if(translateY > 0){
+                    translateY = 0;
+                }else if(translateY < -maxHeight){
+                    translateY = -maxHeight
+                }
+                child.style.transform = `translateY(${translateY}px)`;
+
             })
-            
         },
         methods:{
             
@@ -152,15 +159,21 @@
     }
 </script>
 
-<style>
+<style lang="scss">
     *{margin:0;padding:0;box-sizing:border-box;}
     .parent{
         height: 400px;
         overflow: hidden;
         width:480px;
-        border:1px solid red;
+        border:10px solid red;
+        padding:10px;
     }
+
     .child{
         border:1px solid green;
+        p{
+            padding:10px;
+            border:2px solid blue;
+        }
     }
 </style>
